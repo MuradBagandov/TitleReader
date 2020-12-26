@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TitleReader", "TitleReader\TitleReader.csproj", "{316E5369-BF4E-491A-8124-47FC3BE1EE1A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{EFC567E9-4DD1-4BB5-B402-326FD7A607BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\TestConsole.csproj", "{4FCDA562-B03A-4EC8-97E6-395FFEA26ECF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +19,16 @@ Global
 		{316E5369-BF4E-491A-8124-47FC3BE1EE1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{316E5369-BF4E-491A-8124-47FC3BE1EE1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{316E5369-BF4E-491A-8124-47FC3BE1EE1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FCDA562-B03A-4EC8-97E6-395FFEA26ECF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FCDA562-B03A-4EC8-97E6-395FFEA26ECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FCDA562-B03A-4EC8-97E6-395FFEA26ECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FCDA562-B03A-4EC8-97E6-395FFEA26ECF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4FCDA562-B03A-4EC8-97E6-395FFEA26ECF} = {EFC567E9-4DD1-4BB5-B402-326FD7A607BD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {10C967FC-49B4-4343-8843-39CE9FB1F72F}

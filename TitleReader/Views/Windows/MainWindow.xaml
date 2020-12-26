@@ -7,8 +7,29 @@
         xmlns:vm="clr-namespace:TitleReader.ViewModels"
         mc:Ignorable="d"
         DataContext="{Binding MainWindowModel, Source={StaticResource Locator}}"
-        Title="{Binding Title}" Height="450" Width="800">
+        Title="{Binding Adrress}" Height="450" Width="800">
     <Grid>
-        <Button FontSize="50" Foreground="AliceBlue" Background="DarkGray">Button!!!</Button>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.ColumnSpan="2">
+            <Button DockPanel.Dock="Right" Width="80" Content="Найти"
+                    Command="{Binding LoadTitleCommand}"/>
+            <TextBox HorizontalAlignment="Center" Width="300" Margin="5" 
+                     Text="{Binding Adrress, UpdateSourceTrigger=PropertyChanged}"/>
+        </DockPanel>
+        
+        <StackPanel Grid.Column="0" Grid.Row="1">
+            <Image Height="270" Source="/Resources/Images/no-image.png" Margin="5"/>
+        </StackPanel>
+
+        <ListBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Title.Chapters, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </Window>

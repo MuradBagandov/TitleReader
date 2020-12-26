@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TitleReader.Services.Interfaces;
+using TitleReader.Services;
 using TitleReader.ViewModels;
 
 namespace TitleReader
@@ -46,6 +48,7 @@ namespace TitleReader
 
         internal static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
+            services.AddSingleton<ITitleParser, RanobelibTitleParser>();
             services.AddSingleton<MainWindowViewModel>();
         }
 

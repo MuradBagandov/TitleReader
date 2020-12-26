@@ -239,6 +239,9 @@
   <ItemGroup>
     <Folder Include="Models\Interfaces\" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\no-image.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
