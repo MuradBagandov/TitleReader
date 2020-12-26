@@ -9,6 +9,6 @@
         DataContext="{Binding MainWindowModel, Source={StaticResource Locator}}"
         Title="{Binding Title}" Height="450" Width="800">
     <Grid>
-        <Button FontSize="50" Foreground="AliceBlue" Background="Black">Button!!!</Button>
+        <Button FontSize="50" Foreground="AliceBlue" Background="DarkGray">Button!!!</Button>
     </Grid>
 </Window>
