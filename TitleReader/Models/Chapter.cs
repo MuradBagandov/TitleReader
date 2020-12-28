@@ -8,12 +8,15 @@ namespace TitleReader.Models
 {
     internal class Chapter
     {
-        public string Name { get; }
+        public string Name { get; set; }
+
+        public string Number { get; set; }
 
         public Uri Uri { get; }
 
+        public string Date { get; set; }
+
         public Chapter(Uri uri) => Uri = uri;
 
-        public Chapter(string name, Uri uri) : this(uri) => Name = name;
     }
 }

@@ -16,14 +16,18 @@ namespace TitleReader.Models
 
         public string Names { get;  set; }
 
+        public string Description { get; set; }
+
+        public string DateOfRelease { get; set; }
+
+        public string Status { get; set; }
+
+        public List<string> Authors { get; set; }
+
         public Uri Uri { get;  set; }
 
         public Uri Cover { get; set; }
 
         public List<Chapter> Chapters { get;  set; }
-
-        public string Description { get;  set; }
-
-
     }
 }

@@ -139,6 +139,7 @@
     <Reference Include="System.Diagnostics.EventLog, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.EventLog.4.7.0\lib\net461\System.Diagnostics.EventLog.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -182,10 +183,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Infastructure\Commands\Base\Command.cs" />
-    <Compile Include="Infastructure\Commands\LambdaCommand.cs" />
-    <Compile Include="Infastructure\Convertors\Base\Convertor.cs" />
-    <Compile Include="Infastructure\Convertors\Base\MultiConvertor.cs" />
+    <Compile Include="Infrastuctures\Commands\Base\Command.cs" />
+    <Compile Include="Infrastuctures\Commands\LambdaCommand.cs" />
+    <Compile Include="Infrastuctures\Convertors\Base\Convertor.cs" />
+    <Compile Include="Infrastuctures\Convertors\Base\MultiConvertor.cs" />
+    <Compile Include="Infrastuctures\Convertors\ChapterNameFormatToListBox.cs" />
+    <Compile Include="Infrastuctures\Convertors\ConvertPropertyVisibility.cs" />
     <Compile Include="Models\Chapter.cs" />
     <Compile Include="Models\Title.cs" />
     <Compile Include="Program.cs" />
@@ -241,6 +244,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\no-image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\pngtree-elegant-floral-pattern-design-for-fabric-image_318391.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\images.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\istockphoto-531267772-170667a.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
