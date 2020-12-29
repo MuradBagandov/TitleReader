@@ -1,0 +1,220 @@
+﻿<UserControl x:Class="TitleReader.Views.MainTitle"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:local="clr-namespace:TitleReader.Views"
+             xmlns:vm="clr-namespace:TitleReader.ViewModels"
+             xmlns:models="clr-namespace:TitleReader.Models"
+             xmlns:conv="clr-namespace:TitleReader.Infrastuctures.Convertors"
+             DataContext="{Binding MainTitlewModel, Source={StaticResource Locator}}"
+             mc:Ignorable="d" d:DesignWidth="800">
+    
+    <Grid>
+        <Grid.Resources>
+            <Style x:Key="ContentPanel" TargetType="Border">
+                <Setter Property="Margin" Value="0,5"/>
+                <Setter Property="CornerRadius" Value="2"/>
+                <Setter Property="Background" Value="White"/>
+            </Style>
+
+            <Style x:Key="TextBlockPropertyName" TargetType="TextBlock">
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Margin" Value="0,0,5,0"/>
+            </Style>
+
+            <Style x:Key="TextBlockPropertyValue" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+            </Style>
+
+            <Style x:Key="TextBlockTitleName" TargetType="TextBlock" BasedOn="{StaticResource TextBlockPropertyName}">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+            </Style>
+
+            <Style TargetType="WrapPanel" x:Key="WrapPanelRowTitleProperties">
+                <Setter Property="Orientation" Value="Horizontal"/>
+                <Setter Property="Margin" Value="0,0,0,5"/>
+            </Style>
+
+            <conv:ChapterNameFormatToListBox x:Key="ChaptersFormatConv"/>
+        </Grid.Resources>
+
+        <ScrollViewer Visibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+            <StackPanel Margin="5,0">
+                <Border Style="{StaticResource ContentPanel}">
+                    <Grid Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Border BorderBrush="#505050" BorderThickness="0.3" VerticalAlignment="Top"
+                                Margin="0,0,15,0">
+                            <Image Source="{Binding Cover}" 
+                               Margin="1" Height="300"/>
+                        </Border>
+                        <StackPanel  Orientation="Vertical" Grid.Column="1"  DataContext="{Binding MainWindowViewModel.Title}">
+                            <StackPanel Orientation="Vertical" Margin="0,5">
+                                <TextBlock Text="{Binding Name}" Style="{StaticResource TextBlockTitleName}"/>
+                                <TextBlock Text="{Binding AlterName}" Style="{StaticResource TextBlockPropertyValue}"/>
+                            </StackPanel>
+
+                            <WrapPanel>
+                                <WrapPanel.Style>
+                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Names}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </WrapPanel.Style>
+                                <TextBlock Text="Тип" Style="{StaticResource TextBlockPropertyName}"/>
+                                <TextBlock Text="{Binding Names}" Style="{StaticResource TextBlockPropertyValue}"/>
+                            </WrapPanel>
+
+                            <WrapPanel>
+                                <WrapPanel.Style>
+                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Authors}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </WrapPanel.Style>
+                                <TextBlock Text="Автор" Style="{StaticResource TextBlockPropertyName}"/>
+                                <TextBlock Text="{Binding Authors}" Style="{StaticResource TextBlockPropertyValue}"/>
+                            </WrapPanel>
+
+                            <WrapPanel>
+                                <WrapPanel.Style>
+                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Status}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </WrapPanel.Style>
+                                <TextBlock Text="Статус" Style="{StaticResource TextBlockPropertyName}"/>
+                                <TextBlock Text="{Binding Status}" Style="{StaticResource TextBlockPropertyValue}"/>
+                            </WrapPanel>
+
+                            <WrapPanel>
+                                <WrapPanel.Style>
+                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding DateOfRelease}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </WrapPanel.Style>
+                                <TextBlock Text="Дата релиза" Style="{StaticResource TextBlockPropertyName}"/>
+                                <TextBlock Text="{Binding DateOfRelease}" Style="{StaticResource TextBlockPropertyValue}"/>
+                            </WrapPanel>
+
+                            <WrapPanel>
+                                <WrapPanel.Style>
+                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Chapters}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </WrapPanel.Style>
+                                <TextBlock Text="Загружено глав" Style="{StaticResource TextBlockPropertyName}"/>
+                                <TextBlock Text="{Binding Chapters.Count}" Style="{StaticResource TextBlockPropertyValue}"/>
+                            </WrapPanel>
+
+                            <WrapPanel Orientation="Vertical">
+                                <WrapPanel.Style>
+                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Description}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </WrapPanel.Style>
+                                <TextBlock Text="Описание" Style="{StaticResource TextBlockPropertyName}"/>
+                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap"
+                                Style="{StaticResource TextBlockPropertyValue}"/>
+                            </WrapPanel>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource ContentPanel}">
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Style.Triggers >
+                                    <DataTrigger Binding="{Binding Title}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="Список глав:" Margin="10,5"
+                                   Style="{StaticResource TextBlockPropertyName}"/>
+
+                        <Border Grid.Row="1" BorderThickness="0, 0.3" BorderBrush="#606060">
+                            <Grid>
+                                <TextBlock Text="Нет глав!" TextAlignment="Center"
+                                       Style="{StaticResource TextBlockPropertyValue}"
+                                       Margin="0,20" FontSize="16"
+                                       Visibility="{Binding Visibility,ElementName=ListChapters, Converter={conv:ConvertPropertyVisibility Base=Collapsed}}"/>
+                                
+                                <ListBox x:Name="ListChapters" Margin="1"
+                                 BorderThickness="0" MaxHeight="500" 
+                                 HorizontalContentAlignment="Stretch"
+                                 ItemsSource="{Binding MainWindowViewModel.Title.Chapters, UpdateSourceTrigger=PropertyChanged}"
+                                         SelectedItem="{Binding SelectChapter}">
+                                    <ListBox.Style>
+                                        <Style TargetType="ListBox">
+                                            <Style.Triggers>
+                                                <Trigger Property="ItemsSource" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ListBox.Style>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type models:Chapter}">
+                                            <Grid Margin="5">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition Width="auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Number}" FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding Name, Converter={StaticResource ChaptersFormatConv}}"/>
+                                                </StackPanel>
+
+                                                <TextBlock Grid.Column="1" Text="{Binding Date}" Margin="0,0,10,0"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

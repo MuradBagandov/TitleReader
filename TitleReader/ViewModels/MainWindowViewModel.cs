@@ -18,9 +18,10 @@ namespace TitleReader.ViewModels
     internal class MainWindowViewModel : Base.ViewModel
     {
         private ITitleParser _parser;
-        private BitmapSource _defaultCover;
 
         #region Properties
+
+        public MainTitleViewModel MainTitleViewModel { get;  }
 
         #region string : Address
         private string _address = @"https://ranobelib.me/tales-of-herding-gods";
@@ -42,24 +43,15 @@ namespace TitleReader.ViewModels
         }
         #endregion
 
-        #region BitmapImage : Cover
-        private BitmapSource _cover;
-
-        public BitmapSource Cover
-        {
-            get => _cover;
-            set => Set(ref _cover, value);
-        }
-        #endregion
-
         #endregion
 
 
         #region Commands
 
+        #region LoadTitleCommand
         public ICommand LoadTitleCommand { get; }
 
-        private bool CanLoadTitleCommandExecuted(object p) 
+        private bool CanLoadTitleCommandExecuted(object p)
             => Uri.TryCreate(Adrress, UriKind.Absolute, out Uri add);
 
         private void OnLoadTitleCommandExecute(object p)
@@ -69,47 +61,21 @@ namespace TitleReader.ViewModels
             {
                 Title = _parser.GetTitle(new Uri(Adrress));
             }
-            catch {}
-            
-
-            if (Title?.Cover != null)
-            {
-                WebClient client = new WebClient();
-
-                var coverdata = client.DownloadData(Title.Cover);
-                Cover = BitmaSourceFromByteArray(coverdata);
-            }
-            else
-                Cover = _defaultCover;
-        }
+            catch { }
+            MainTitleViewModel.RefreshTitleCommand.Execute(p);
+        } 
+        #endregion
 
         #endregion
 
-        public MainWindowViewModel(ITitleParser parser )
+        public MainWindowViewModel(ITitleParser parser, MainTitleViewModel TitleWindow )
         {
+            MainTitleViewModel = TitleWindow;
+            MainTitleViewModel.MainWindowViewModel = this;
+
             LoadTitleCommand = new LambdaCommand(OnLoadTitleCommandExecute, CanLoadTitleCommandExecuted);
 
-            _parser = parser;
-
-            _defaultCover = new BitmapImage(new Uri(@"/Resources/Images/no-image.png", UriKind.Relative));
-            Cover = _defaultCover;
+            _parser = parser;   
         }
-
-        public static BitmapSource BitmaSourceFromByteArray(byte[] buffer)
-        {
-            var bitmap = new BitmapImage();
-
-            using (var stream = new MemoryStream(buffer))
-            {
-                bitmap.BeginInit();
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.StreamSource = stream;
-                bitmap.EndInit();
-            }
-
-            bitmap.Freeze(); // optionally make it cross-thread accessible
-            return bitmap;
-        }
-
     }
 }

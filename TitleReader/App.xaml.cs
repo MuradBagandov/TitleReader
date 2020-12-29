@@ -50,6 +50,7 @@ namespace TitleReader
         {
             services.AddSingleton<ITitleParser, RanobelibTitleParser>();
             services.AddSingleton<MainWindowViewModel>();
+            services.AddSingleton<MainTitleViewModel>();
         }
 
         public static string GetSourceCodePath([CallerFilePath] string path = null) => path;

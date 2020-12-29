@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:TitleReader"
         xmlns:vm="clr-namespace:TitleReader.ViewModels"
+        xmlns:views="clr-namespace:TitleReader.Views"
         xmlns:models="clr-namespace:TitleReader.Models"
         xmlns:conv="clr-namespace:TitleReader.Infrastuctures.Convertors"
         DataContext="{Binding MainWindowModel, Source={StaticResource Locator}}"
@@ -43,226 +45,25 @@
                                  VerticalAlignment="Center" 
                                  FontSize="18"
                                  Text="{Binding Adrress, UpdateSourceTrigger=PropertyChanged}"/>
-                        
                     </DockPanel>
                 </Border>
             </Grid>
-            
-
         </Grid>
 
-        <Grid Grid.Row="1" Visibility="{Binding Visibility, ElementName=ScrollContent, Converter={conv:ConvertPropertyVisibility}}">
-            <fa:ImageAwesome Icon="Spinner" Spin="True"  SpinDuration="3" Foreground="DeepSkyBlue" Height="50"/>
-        </Grid>
-        
-        <ScrollViewer x:Name="ScrollContent" Grid.Row="1" Visibility="Visible"
-                      ScrollViewer.VerticalScrollBarVisibility="Hidden" 
-                      Margin="0,5">
-            <ScrollViewer.Style>
-                <Style TargetType="ScrollViewer">
+        <Grid Grid.Row="1" MaxWidth="1060" >
+            <views:MainTitle DataContext="{Binding MainTitleViewModel}"
+                         VerticalAlignment="Top" Margin="10,5"/>
+            <Grid.Style>
+                <Style TargetType="Grid">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Title}" Value="{x:Null}">
-                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="Visibility" Value="Hidden"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </ScrollViewer.Style>
-            <StackPanel MaxWidth="1060">
-                <StackPanel.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="Margin" Value="15,5"/>
-                        <Setter Property="CornerRadius" Value="6"/>
-                        <Setter Property="Background" Value="White"/>
-                    </Style>
-                    
-                    <Style x:Key="TextBlockPropertyName" TargetType="TextBlock">
-                            <Setter Property="FontWeight" Value="Bold"/>
-                            <Setter Property="FontSize" Value="14"/>
-                            <Setter Property="Margin" Value="0,0,5,0"/>
-                    </Style>
+            </Grid.Style>
+        </Grid>
 
-                    <Style x:Key="TextBlockPropertyValue" TargetType="TextBlock">
-                        <Setter Property="FontSize" Value="14"/>
-                        <Setter Property="TextWrapping" Value="Wrap"/>
-                    </Style>
 
-                    <Style x:Key="TextBlockTitleName" TargetType="TextBlock" BasedOn="{StaticResource TextBlockPropertyName}">
-                        <Setter Property="FontSize" Value="18"/>
-                        <Setter Property="TextWrapping" Value="Wrap"/>
-                    </Style>
-
-                    <Style TargetType="WrapPanel" x:Key="WrapPanelRowTitleProperties">
-                        <Setter Property="Orientation" Value="Horizontal"/>
-                        <Setter Property="Margin" Value="0,0,0,5"/>
-                    </Style>
-                </StackPanel.Resources>
-                <Border>
-                    <Grid Margin="10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <!--<Image Height="270" Source="{Binding Cover}" Margin="5,10" MaxWidth="250"/>-->
-                        <Border BorderBrush="#505050" BorderThickness="0.6" VerticalAlignment="Top"
-                                CornerRadius="0" Margin="0,0,15,0">
-                            <Image Source="{Binding Cover}" 
-                               Margin="1" MaxWidth="250" Height="300"/>
-                        </Border>
-                        <StackPanel  Orientation="Vertical" Grid.Column="1">
-                            <StackPanel Orientation="Vertical" Margin="0,5">
-                                <TextBlock Text="{Binding Title.Name}" Style="{StaticResource TextBlockTitleName}"/>
-                                <TextBlock Text="{Binding Title.AlterName}" Style="{StaticResource TextBlockPropertyValue}"/>
-                            </StackPanel>
-
-                            <WrapPanel>
-                                <WrapPanel.Style>
-                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Title.Names}" Value="{x:Null}">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </WrapPanel.Style>
-                                <TextBlock Text="Тип" Style="{StaticResource TextBlockPropertyName}"/>
-                                <TextBlock Text="{Binding Title.Names}" Style="{StaticResource TextBlockPropertyValue}"/>
-                            </WrapPanel>
-
-                            <WrapPanel>
-                                <WrapPanel.Style>
-                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Title.Authors}" Value="{x:Null}">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </WrapPanel.Style>
-                                <TextBlock Text="Автор" Style="{StaticResource TextBlockPropertyName}"/>
-                                <TextBlock Text="{Binding Title.Authors}" Style="{StaticResource TextBlockPropertyValue}"/>
-                            </WrapPanel>
-
-                            <WrapPanel>
-                                <WrapPanel.Style>
-                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Title.Status}" Value="{x:Null}">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </WrapPanel.Style>
-                                <TextBlock Text="Статус" Style="{StaticResource TextBlockPropertyName}"/>
-                                <TextBlock Text="{Binding Title.Status}" Style="{StaticResource TextBlockPropertyValue}"/>
-                            </WrapPanel>
-
-                            <WrapPanel>
-                                <WrapPanel.Style>
-                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Title.DateOfRelease}" Value="{x:Null}">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </WrapPanel.Style>
-                                <TextBlock Text="Дата релиза" Style="{StaticResource TextBlockPropertyName}"/>
-                                <TextBlock Text="{Binding Title.DateOfRelease}" Style="{StaticResource TextBlockPropertyValue}"/>
-                            </WrapPanel>
-
-                            <WrapPanel>
-                                <WrapPanel.Style>
-                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Title.Chapters}" Value="{x:Null}">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </WrapPanel.Style>
-                                <TextBlock Text="Загружено глав" Style="{StaticResource TextBlockPropertyName}"/>
-                                <TextBlock Text="{Binding Title.Chapters.Count}" Style="{StaticResource TextBlockPropertyValue}"/>
-                            </WrapPanel>
-
-                            <WrapPanel Orientation="Vertical">
-                                <WrapPanel.Style>
-                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Title.Description}" Value="{x:Null}">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </WrapPanel.Style>
-                                <TextBlock Text="Описание" Style="{StaticResource TextBlockPropertyName}"/>
-                                <TextBlock Text="{Binding Title.Description}" TextWrapping="Wrap"
-                                Style="{StaticResource TextBlockPropertyValue}"/>
-                            </WrapPanel>
-                        </StackPanel>
-                    </Grid>
-                </Border>
-
-                <Border>
-                    <Grid>
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Style.Triggers >
-                                    <DataTrigger Binding="{Binding Title}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-                        <Grid.Resources>
-                            <conv:ChapterNameFormatToListBox x:Key="ChaptersFormatConv"/>
-                        </Grid.Resources>
-                        
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="Список глав:" Margin="10,5"
-                                   Style="{StaticResource TextBlockPropertyName}"/>
-
-                        <TextBlock Grid.Row="1" Text="Нет глав!" TextAlignment="Center"
-                                   Style="{StaticResource TextBlockPropertyValue}"
-                                   Margin="0,15,0,20" FontSize="16"/>
-                        <ListBox Grid.Row="1" Margin="10,0,10,10" MaxHeight="500" HorizontalContentAlignment="Stretch"
-                                 BorderThickness="0,1,0,0"
-                                 ItemsSource="{Binding Title.Chapters, UpdateSourceTrigger=PropertyChanged}">
-                            <ListBox.Style>
-                                <Style TargetType="ListBox">
-                                    <Style.Triggers>
-                                        <Trigger Property="ItemsSource" Value="{x:Null}">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ListBox.Style>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type models:Chapter}">
-                                    <Border Margin="0">
-                                        <Grid Margin="5">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition/>
-                                                <ColumnDefinition Width="auto"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <StackPanel Grid.Column="0" Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Number}" FontWeight="Bold"/>
-                                                <TextBlock Text="{Binding Name, Converter={StaticResource ChaptersFormatConv}}"/>
-                                            </StackPanel>
-
-                                            <TextBlock Grid.Column="1" Text="{Binding Date}" Margin="0,0,10,0"/>
-                                        </Grid>
-                                    </Border>
-
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </Grid>
-                </Border>
-            </StackPanel>
-        </ScrollViewer>
     </Grid>
 </Window>

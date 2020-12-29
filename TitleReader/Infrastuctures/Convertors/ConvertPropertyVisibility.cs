@@ -16,22 +16,31 @@ namespace TitleReader.Infrastuctures.Convertors
     [MarkupExtensionReturnType(typeof(ConvertPropertyVisibility))]
     class ConvertPropertyVisibility : Base.Convertor
     {
+
+        
+        public Visibility Base { get; set; } = Visibility.Hidden;
+
+       
+
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (!(value is Visibility vis))
                 throw new NotImplementedException();
-            if (vis == Visibility.Visible)
-                return Visibility.Hidden;
-            else
-                return Visibility.Visible;
+            return Convert_vis(vis);
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (!(value is Visibility vis))
                 throw new NotImplementedException();
-            if (vis == Visibility.Visible)
-                return Visibility.Hidden;
+           
+            return Convert_vis(vis);
+        }
+
+        public Visibility Convert_vis(Visibility value)
+        {
+            if (value == Visibility.Visible)
+                return Base;
             else
                 return Visibility.Visible;
         }
