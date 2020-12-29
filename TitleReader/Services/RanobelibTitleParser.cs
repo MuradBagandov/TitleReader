@@ -28,7 +28,9 @@ namespace TitleReader.Services
                 throw new Exception("Ошибка подключения");
             }
 
-            string name, alterName, description, dateOfRelease, status;
+            string name, alterName, description, dateOfRelease, statusTranslate, status;
+            List<string> authors = new List<string>();
+            List<string> genres = new List<string>();
 
             string info_section = Regex.Match(_web_string, @"<section([\s\S]+)<\/section>").Value;
 
@@ -39,9 +41,9 @@ namespace TitleReader.Services
 
             alterName = Regex.Match(info_section,
                 @"<meta itemprop=.alternativeHeadline. content=.([^<>]+).\s+\/>").Groups[1].Value;
+
             description = Regex.Match(info_section,
                 @"<meta itemprop=.description. content=.([^<>]+).\s+\/>").Groups[1].Value;
-
             description = description.Replace("&quot;", "\u0022");
             description = Regex.Replace(description, @"&([^;&\s]+;)?[^;&\s]+;", " ");
 
@@ -53,6 +55,24 @@ namespace TitleReader.Services
             status = Regex.Match(info_section,
                 @"<strong>Статус тайтла<\/strong>[\n\s]*<span>([^<>]*)<\/span>").Groups[1].Value;
 
+            statusTranslate = Regex.Match(info_section,
+                @"<strong>Статус перевода<\/strong>[\n\s]*<span>([^<>]*)<\/span>").Groups[1].Value;
+
+
+            var authors_text = Regex.Match(info_section, @"<strong>Автор<\/strong>(?:[^<>]*<a[^<>]*>[^<>]*<\/a>)*").Value;
+            var autors_matches = Regex.Matches(authors_text, @">([^<>]+)<\/a>");
+
+
+            foreach (Match item in autors_matches)
+                authors.Add(item.Groups[1].Value);
+
+            var genres_text = Regex.Match(info_section, @"<strong>Жанры<\/strong>(?:[^<>]*<a[^<>]*>[^<>]*<\/a>)*").Value;
+            var genres_matches = Regex.Matches(genres_text, @">([^<>]+)<\/a>");
+
+
+            foreach (Match item in genres_matches)
+                genres.Add(item.Groups[1].Value);
+
 
             string cover_uri =
                 Regex.Match(info_section, @"<img src=.([^<>\u0022]+)..*class=.manga__cover.>").Groups[1].Value;
@@ -62,13 +82,16 @@ namespace TitleReader.Services
 
             Title title = new Title()
             {
+                Uri = uri,
                 Name = name,
-                Names = "Новелла",
                 AlterName = alterName,
+                Names = "Новелла",
+                Authors = authors,
+                Status = status,
+                StatusTranslate = statusTranslate,
+                Genres = genres,
                 Description = description,
                 DateOfRelease = dateOfRelease,
-                Status = status,
-                Uri = uri,
                 Cover = cover,
                 Chapters = GetChapters(_web_string)
             };

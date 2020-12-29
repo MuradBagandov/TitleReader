@@ -42,6 +42,7 @@
             </Style>
 
             <conv:ChapterNameFormatToListBox x:Key="ChaptersFormatConv"/>
+            <conv:ListToString x:Key="ListToString"/>
         </Grid.Resources>
 
         <ScrollViewer Visibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Hidden">
@@ -58,7 +59,7 @@
                                Margin="1" Height="300"/>
                         </Border>
                         <StackPanel  Orientation="Vertical" Grid.Column="1"  DataContext="{Binding MainWindowViewModel.Title}">
-                            <StackPanel Orientation="Vertical" Margin="0,5">
+                            <StackPanel Orientation="Vertical" Margin="0,0 0 5">
                                 <TextBlock Text="{Binding Name}" Style="{StaticResource TextBlockTitleName}"/>
                                 <TextBlock Text="{Binding AlterName}" Style="{StaticResource TextBlockPropertyValue}"/>
                             </StackPanel>
@@ -88,7 +89,7 @@
                                     </Style>
                                 </WrapPanel.Style>
                                 <TextBlock Text="Автор" Style="{StaticResource TextBlockPropertyName}"/>
-                                <TextBlock Text="{Binding Authors}" Style="{StaticResource TextBlockPropertyValue}"/>
+                                <TextBlock Text="{Binding Authors, Converter={StaticResource ListToString}}" Style="{StaticResource TextBlockPropertyValue}"/>
                             </WrapPanel>
 
                             <WrapPanel>
@@ -101,8 +102,22 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                <TextBlock Text="Статус" Style="{StaticResource TextBlockPropertyName}"/>
+                                <TextBlock Text="Статус тайтла" Style="{StaticResource TextBlockPropertyName}"/>
                                 <TextBlock Text="{Binding Status}" Style="{StaticResource TextBlockPropertyValue}"/>
+                            </WrapPanel>
+
+                            <WrapPanel>
+                                <WrapPanel.Style>
+                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding StatusTranslate}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </WrapPanel.Style>
+                                <TextBlock Text="Статус перевода" Style="{StaticResource TextBlockPropertyName}"/>
+                                <TextBlock Text="{Binding StatusTranslate}" Style="{StaticResource TextBlockPropertyValue}"/>
                             </WrapPanel>
 
                             <WrapPanel>
@@ -129,8 +144,23 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                <TextBlock Text="Загружено глав" Style="{StaticResource TextBlockPropertyName}"/>
+                                <TextBlock Text="Загружено глав" Style="{StaticResource TextBlockPropertyName}" 
+                                           ToolTip="Учитываются экстра главы и пролог"/> 
                                 <TextBlock Text="{Binding Chapters.Count}" Style="{StaticResource TextBlockPropertyValue}"/>
+                            </WrapPanel>
+
+                            <WrapPanel>
+                                <WrapPanel.Style>
+                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Genres}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </WrapPanel.Style>
+                                <TextBlock Text="Жанры" Style="{StaticResource TextBlockPropertyName}"/>
+                                <TextBlock Text="{Binding Genres, Converter={StaticResource ListToString}}" Style="{StaticResource TextBlockPropertyValue}"/>
                             </WrapPanel>
 
                             <WrapPanel Orientation="Vertical">
@@ -167,7 +197,7 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="Список глав:" Margin="10,5"
+                        <TextBlock Grid.Row="0" Text="Список глав:" Margin="10"
                                    Style="{StaticResource TextBlockPropertyName}"/>
 
                         <Border Grid.Row="1" BorderThickness="0, 0.3" BorderBrush="#606060">

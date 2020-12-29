@@ -22,7 +22,11 @@ namespace TitleReader.Models
 
         public string Status { get; set; }
 
+        public string StatusTranslate { get; set; }
+
         public List<string> Authors { get; set; }
+
+        public List<string> Genres { get; set; }
 
         public Uri Uri { get;  set; }
 
