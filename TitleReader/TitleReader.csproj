@@ -127,6 +127,8 @@
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -193,10 +195,21 @@
     <Compile Include="Models\Chapter.cs" />
     <Compile Include="Models\Title.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Resources\Styles\ColourfulDarkTheme.xaml.cs">
+      <DependentUpon>ColourfulDarkTheme.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\Interfaces\IContentChapterParser.cs" />
     <Compile Include="Services\Interfaces\ITitleParser.cs" />
     <Compile Include="Services\RanobelibTitleParser.cs" />
     <Compile Include="ViewModels\Base\ViewModel.cs" />
+    <Page Include="Resources\Styles\Basic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Styles\ColourfulDarkTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MainTitle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
