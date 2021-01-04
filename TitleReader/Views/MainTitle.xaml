@@ -1,21 +1,24 @@
-﻿<UserControl x:Class="TitleReader.Views.MainTitle"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:local="clr-namespace:TitleReader.Views"
-             xmlns:vm="clr-namespace:TitleReader.ViewModels"
-             xmlns:models="clr-namespace:TitleReader.Models"
-             xmlns:conv="clr-namespace:TitleReader.Infrastuctures.Convertors"
-             DataContext="{Binding MainTitlewModel, Source={StaticResource Locator}}"
-             mc:Ignorable="d" d:DesignWidth="800">
+﻿<Page x:Class="TitleReader.Views.MainTitle" mc:Ignorable="d" 
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:fa="http://schemas.fontawesome.io/icons/"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      
+      xmlns:local="clr-namespace:TitleReader.Views"
+      xmlns:vm="clr-namespace:TitleReader.ViewModels"
+      xmlns:models="clr-namespace:TitleReader.Models"
+      xmlns:conv="clr-namespace:TitleReader.Infrastuctures.Convertors"
+      
+      DataContext="{Binding TitleModel, Source={StaticResource Locator}}"
+      d:DesignWidth="800"
+      ShowsNavigationUI="False" KeepAlive="True" Title="Title">
     
     <Grid>
         <Grid.Resources>
             <Style x:Key="ContentPanel" TargetType="Border">
-                <Setter Property="Margin" Value="0,5"/>
+                <Setter Property="Margin" Value="0,0,0,8"/>
                 <Setter Property="CornerRadius" Value="2"/>
                 <Setter Property="Background" Value="#eeeeee"/>
             </Style>
@@ -56,19 +59,31 @@
         </Grid.Resources>
 
         <ScrollViewer Visibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Hidden">
-            <StackPanel Margin="5,0">
+            <StackPanel Margin="10" MaxWidth="1000">
+                <Border Style="{StaticResource ContentPanel}" >
+
+                    <DockPanel Margin="5,2">
+                        <Image DockPanel.Dock="Left" Source="/Resources/Images/icon.png" Height="50" MouseDown="Image_MouseDown" Cursor="Hand"/>
+                        <Grid></Grid>
+                    </DockPanel>
+                </Border>
+                
                 <Border Style="{StaticResource ContentPanel}">
                     <Grid Margin="10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Border BorderBrush="#505050" BorderThickness="0.3" VerticalAlignment="Top"
-                                Margin="0,0,15,0">
-                            <Image Source="{Binding Cover}" 
-                               Margin="1" Height="300"/>
-                        </Border>
-                        <StackPanel  Orientation="Vertical" Grid.Column="1"  DataContext="{Binding MainWindowViewModel.Title}">
+                        <StackPanel VerticalAlignment="Top" Width="200" Margin="0,0,10,0">
+                            <Border BorderBrush="#505050" BorderThickness="0.3"
+                                Margin="0,0,0,0">
+                                <Image Source="{Binding Cover}"  VerticalAlignment="Top"
+                               Margin="1"/>
+                            </Border>
+                            <Button Content="Начать читать" Padding="10,5" Margin="0,5"
+                                    Command="{Binding FirstChapterCommand}" Click="Button_Click"/>
+                        </StackPanel>
+                        <StackPanel  Orientation="Vertical" Grid.Column="1"  DataContext="{Binding Title}">
                             <StackPanel Orientation="Vertical" Margin="0,0 0 5">
                                 <TextBlock Text="{Binding Name}" Style="{StaticResource TextBlockTitleName}"/>
                                 <TextBlock Text="{Binding AlterName}" Style="{StaticResource TextBlockPropertyValue}"/>
@@ -92,6 +107,9 @@
                                 <WrapPanel.Style>
                                     <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
                                         <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Authors.Count}" Value="0">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
                                             <DataTrigger Binding="{Binding Authors}" Value="{x:Null}">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
@@ -155,7 +173,7 @@
                                     </Style>
                                 </WrapPanel.Style>
                                 <TextBlock Text="Загружено глав" Style="{StaticResource TextBlockPropertyName}" 
-                                           ToolTip="Учитываются экстра главы и пролог"/> 
+                                           ToolTip="Учитываются экстра главы и пролог"/>
                                 <TextBlock Text="{Binding Chapters.Count}" Style="{StaticResource TextBlockPropertyValue}"/>
                             </WrapPanel>
 
@@ -164,6 +182,9 @@
                                     <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Genres}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Genres.Count}" Value="0">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -177,13 +198,13 @@
                                 <Expander.Header>
                                     <TextBlock Text="Описание" Style="{StaticResource TextBlockPropertyName}" Margin="0" />
                                 </Expander.Header>
-                                
+
                                 <WrapPanel Orientation="Vertical">
                                     <TextBlock Text="{Binding Description}" TextWrapping="Wrap"
                                 Style="{StaticResource TextBlockPropertyValue}"/>
                                 </WrapPanel>
                             </Expander>
-                            
+
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -204,21 +225,38 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="Список глав" Margin="10"
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" 
+                                    Padding="20,0" Margin="8"
+                                    Content="Открыть"
+                                    Command="{Binding GetSelectChapterContentCommand}" 
+                                    Click="Button_Click"/>
+                            
+                            <TextBlock Grid.Row="0" Text="Список глав" Margin="10"
                                    Style="{StaticResource TextBlockPropertyName}"/>
-
+                           
+                        </DockPanel>
                         <Border Grid.Row="1" BorderThickness="0, 0.3" BorderBrush="#606060">
+                            <Border.Resources>
+                                <Style TargetType="Hyperlink">
+                                    <Setter Property="Command" Value="{Binding GetSelectChapterContentCommand}"/>
+                                </Style>
+                            </Border.Resources>
+                            
                             <Grid>
                                 <TextBlock Text="Нет глав!" TextAlignment="Center"
                                        Style="{StaticResource TextBlockPropertyValue}"
                                        Margin="0,20" FontSize="16"
                                        Visibility="{Binding Visibility,ElementName=ListChapters, Converter={conv:ConvertPropertyVisibility Base=Collapsed}}"/>
-                                
+
                                 <ListBox x:Name="ListChapters" Margin="1"
-                                 BorderThickness="0" MaxHeight="500" 
-                                 HorizontalContentAlignment="Stretch"
-                                 ItemsSource="{Binding MainWindowViewModel.Title.Chapters, UpdateSourceTrigger=PropertyChanged}"
-                                         SelectedItem="{Binding SelectChapter}">
+                                         BorderThickness="0" MaxHeight="500" 
+                                         HorizontalContentAlignment="Stretch"
+                                         ItemsSource="{Binding Title.Chapters, UpdateSourceTrigger=PropertyChanged}"
+                                         SelectedItem="{Binding SelectChapter}"
+                                         VirtualizingPanel.IsVirtualizing="True"
+                                         VirtualizingPanel.VirtualizationMode="Recycling"
+                                         VirtualizingPanel.IsContainerVirtualizable="True">
                                     <ListBox.Style >
                                         <Style TargetType="ListBox">
                                             <Style.Triggers>
@@ -228,25 +266,49 @@
                                             </Style.Triggers>
                                         </Style>
                                     </ListBox.Style>
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
                                     <ListBox.ItemTemplate>
                                         <DataTemplate DataType="{x:Type models:Chapter}">
-                                            <Grid Margin="5">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition/>
-                                                    <ColumnDefinition Width="auto"/>
-                                                </Grid.ColumnDefinitions>
+                                            <Grid>
+                                                <ContentControl Panel.ZIndex="1" Cursor="Hand"
+                                                            DataContext="{Binding DataContext,RelativeSource={RelativeSource AncestorType=Page}}"
+                                                            MouseDoubleClick="Border_MouseDown">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="MouseDoubleClick">
+                                                            <i:InvokeCommandAction Command="{Binding GetSelectChapterContentCommand}"/>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                    <Border Opacity="0.1" Background="White"/>
+                                                </ContentControl>
 
-                                                <StackPanel Grid.Column="0" Orientation="Horizontal">
-                                                    <TextBlock Text="{Binding Number}" FontWeight="Bold"/>
-                                                    <TextBlock Text="{Binding Name, Converter={StaticResource ChaptersFormatConv}}"/>
-                                                </StackPanel>
+                                                <Border>
+                                                    <Grid Margin="5">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition/>
+                                                            <ColumnDefinition Width="auto"/>
+                                                        </Grid.ColumnDefinitions>
 
-                                                <TextBlock Grid.Column="1" Text="{Binding Date}" Margin="0,0,10,0"/>
+                                                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+
+                                                            <TextBlock Text="{Binding Number}" FontWeight="Bold"/>
+                                                            <TextBlock Text="{Binding Name, Converter={StaticResource ChaptersFormatConv}}"/>
+
+                                                        </StackPanel>
+
+
+                                                        <TextBlock Grid.Column="1" Text="{Binding Date}" Margin="0,0,10,0"/>
+                                                    </Grid>
+                                                </Border>
                                             </Grid>
+                                            
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
-                                
+
                             </Grid>
                         </Border>
                     </Grid>
@@ -254,4 +316,4 @@
             </StackPanel>
         </ScrollViewer>
     </Grid>
-</UserControl>
+</Page>

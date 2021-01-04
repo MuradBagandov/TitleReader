@@ -1,0 +1,100 @@
+﻿<Page x:Class="TitleReader.Views.ChapterNovell" mc:Ignorable="d" 
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:fa="http://schemas.fontawesome.io/icons/"
+      xmlns:local="clr-namespace:TitleReader.Views"
+      d:DesignHeight="450" d:DesignWidth="800"
+      DataContext="{Binding TitleModel, Source={StaticResource Locator}}"
+      Title="ChapterNovell" ShowsNavigationUI="False">
+
+    <Grid Background="#202020"> 
+        <Border x:Name="HeaderPanel"  Background="#303030" Panel.ZIndex="1"
+                Height="50" VerticalAlignment="Top" Margin="25,0"
+                CornerRadius="0,0,5,5">
+            <Border.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="{x:Null}"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+
+                <Style TargetType="{x:Type fa:ImageAwesome}">
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="Height" Value="12"/>
+                </Style>
+            </Border.Resources>
+
+            <DockPanel>
+                <Button Click="Button_Click_1" >
+                    <fa:ImageAwesome Icon="LongArrowLeft" Foreground="White"/>
+                </Button>
+                
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="0,0,10,0">
+                    <Button>
+                        <fa:ImageAwesome Icon="Cog"/>
+                    </Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="20,0">
+                    <TextBlock Text="{Binding SelectChapter.Number}"  VerticalAlignment="Center"
+                           Foreground="White" FontSize="16"/>
+                    <TextBlock Text="{Binding SelectChapter.Name}"  VerticalAlignment="Center"
+                           Foreground="White" FontSize="16" Margin="5,0"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <Grid>
+            <TextBlock Text="Не удалось получить содержимое!"
+                           FontSize="20" FontWeight="Bold" 
+                           Foreground="White" Background="#202020"
+                           Padding="0,50" 
+                           TextAlignment="Center" VerticalAlignment="Center">
+            </TextBlock>
+        </Grid>
+
+        <ScrollViewer x:Name="ContentScroll" Background="#202020"
+                      ScrollChanged="ContentScroll_ScrollChanged"
+                      VerticalScrollBarVisibility="Auto" MouseWheel="ContentScroll_MouseWheel">
+            <ScrollViewer.Style>
+                <Style TargetType="ScrollViewer">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=ContentText}" Value="">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Text, ElementName=ContentText}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ScrollViewer.Style>
+
+
+            <StackPanel MaxWidth="900">
+                <TextBlock x:Name="ContentText" LineHeight="22" TextWrapping="Wrap"
+                       TextAlignment="Justify"
+                       Background="Transparent" Foreground="White"
+                       FontSize="16" FontFamily="Helvetica"
+                       Padding="10,80,10,10" 
+                       Text="{Binding SelectChapterContent}"/>
+                <Grid Margin="0,10" Height="35">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" Content="Предыдущая глава" Margin="0,0,10,0"
+                            Command="{Binding PrevoiusChapterCommand}" Click="Button_Click"/>
+
+                    <Button Grid.Column="1" Content="Следующая глава"  Margin="10,0,0,0"
+                            Command="{Binding NextChapterCommand}" Click="Button_Click"/>
+                </Grid>
+            </StackPanel>
+
+        </ScrollViewer>
+
+       
+    </Grid>
+</Page>

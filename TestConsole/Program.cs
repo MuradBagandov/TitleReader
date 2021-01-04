@@ -11,13 +11,33 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
-            WebClient _client = new WebClient();
+            LinkedList<person> persons = new LinkedList<person>();
+            persons.AddLast(new person("tom"));
 
-            string str = _client.DownloadString(new Uri(@"https://ranobelib.me/zloklyuceniya-darka-i-sani"));
+            persons.AddLast(new person("toni"));
 
-            Console.WriteLine(str);
+            persons.AddFirst(new person("Jojo"));
+            
+            LinkedListNode <person> ps = persons.First;
 
-            Console.ReadLine();
+            while (ps != null)
+            {
+                Console.WriteLine(ps.Value.name);
+                ps = ps.Next;
+            }
+
+            Console.Read();
         }
+
+    }
+
+    public class person
+    {
+        public person(string name)
+        {
+            this.name = name;
+        }
+
+        public string name { get; set; }
     }
 }

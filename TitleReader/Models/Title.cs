@@ -32,6 +32,6 @@ namespace TitleReader.Models
 
         public Uri Cover { get; set; }
 
-        public List<Chapter> Chapters { get;  set; }
+        public LinkedList<Chapter> Chapters { get;  set; }
     }
 }

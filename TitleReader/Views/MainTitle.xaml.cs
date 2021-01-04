@@ -18,11 +18,50 @@ namespace TitleReader.Views
     /// <summary>
     /// Логика взаимодействия для MainTitle.xaml
     /// </summary>
-    public partial class MainTitle : UserControl
+    public partial class MainTitle : Page
     {
         public MainTitle()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateForward();
+        }
+
+
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            NavigateForward();
+        }
+
+        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            NavigateBack();
+        }
+
+        private void NavigateForward()
+        {
+            try
+            {
+                NavigationService.GoForward();
+            }
+            catch
+            {
+                NavigationService.Navigate(new Uri("Views/ChapterNovell.xaml", UriKind.Relative));
+            }
+        }
+        private void NavigateBack()
+        {
+            try
+            {
+                NavigationService.GoBack();
+            }
+            catch
+            {
+                NavigationService.Navigate(new Uri("Views/MainPage.aml", UriKind.Relative));
+            }
         }
     }
 }

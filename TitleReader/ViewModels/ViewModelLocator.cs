@@ -11,7 +11,7 @@ namespace TitleReader.ViewModels
     internal class ViewModelLocator
     {
         public MainWindowViewModel MainWindowModel => App.Host.Services.GetRequiredService<MainWindowViewModel>();
-        public MainTitleViewModel MainTitlewModel => App.Host.Services.GetRequiredService<MainTitleViewModel>();
+        public TitleViewModel TitleModel => App.Host.Services.GetRequiredService<TitleViewModel>();
 
     }
 }

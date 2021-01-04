@@ -49,8 +49,9 @@ namespace TitleReader
         internal static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
             services.AddSingleton<ITitleParser, RanobelibTitleParser>();
+            services.AddSingleton<IContentChapterParser, RanobelibContentParser>();
             services.AddSingleton<MainWindowViewModel>();
-            services.AddSingleton<MainTitleViewModel>();
+            services.AddSingleton<TitleViewModel>();
         }
 
         public static string GetSourceCodePath([CallerFilePath] string path = null) => path;

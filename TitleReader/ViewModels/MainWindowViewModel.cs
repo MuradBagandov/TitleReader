@@ -21,7 +21,7 @@ namespace TitleReader.ViewModels
 
         #region Properties
 
-        public MainTitleViewModel MainTitleViewModel { get;  }
+        public TitleViewModel MainTitleViewModel { get;  }
 
         #region string : Address
         private string _address = @"https://ranobelib.me/tales-of-herding-gods";
@@ -30,16 +30,6 @@ namespace TitleReader.ViewModels
         {
             get => _address;
             set => Set(ref _address, value);
-        }
-        #endregion
-
-        #region Title : Title
-        private Title _title;
-
-        public Title Title
-        {
-            get => _title;
-            set => Set(ref _title, value);
         }
         #endregion
 
@@ -56,26 +46,24 @@ namespace TitleReader.ViewModels
 
         private void OnLoadTitleCommandExecute(object p)
         {
-            Title = null;
+            MainTitleViewModel.Title = null;
             try
             {
-                Title = _parser.GetTitle(new Uri(Adrress));
+                MainTitleViewModel.Title = _parser.GetTitle(new Uri(Adrress));
             }
             catch { }
-            MainTitleViewModel.RefreshTitleCommand.Execute(p);
         } 
         #endregion
 
         #endregion
 
-        public MainWindowViewModel(ITitleParser parser, MainTitleViewModel TitleWindow )
+        public MainWindowViewModel(ITitleParser parser, TitleViewModel TitleWindow )
         {
+            _parser = parser;
             MainTitleViewModel = TitleWindow;
             MainTitleViewModel.MainWindowViewModel = this;
 
             LoadTitleCommand = new LambdaCommand(OnLoadTitleCommandExecute, CanLoadTitleCommandExecuted);
-
-            _parser = parser;   
         }
     }
 }

@@ -99,14 +99,14 @@ namespace TitleReader.Services
             return title;
         }
 
-        private List<Chapter> GetChapters(string web_string)
+        private LinkedList<Chapter> GetChapters(string web_string)
         {
-            List<Chapter> result;
+            LinkedList<Chapter> result;
             string name;
             string number;
             Uri uri;
-
             
+
             var chapter_matches = Regex.Matches(web_string, 
                 @"<a\s*class=.link-default.\s*title=([^<>]*)href=.(.*).>([^<]*)(?=<)");
 
@@ -120,22 +120,22 @@ namespace TitleReader.Services
             foreach (Match match in chapter_dates_matches)
                 dates.Add(match.Groups[1].Value);
 
-            List<(string name, string number, Uri uri)> chapters = new List<(string name, string number, Uri uri)>();
+            LinkedList<(string name, string number, Uri uri)> chapters = new LinkedList<(string name, string number, Uri uri)>();
 
             foreach (Match match in chapter_matches)
             {
                 name = Regex.Replace(Regex.Replace(match.Groups[1].Value, @"[\n\u0022]", ""), @"\s+", " ");
                 number = Regex.Replace(match.Groups[3].Value, @"[\s\n]+", " ");
                 uri = new Uri(match.Groups[2].Value);
-                chapters.Add((name, number, uri));
+                chapters.AddLast((name, number, uri));
             }
-            result = chapters.Zip(dates, (chapters, dates) => 
-            new Chapter(chapters.uri) 
+            result = new LinkedList<Chapter>(chapters.Zip(dates, (chapters, dates) =>
+            new Chapter(chapters.uri)
             {
                 Name = chapters.name,
                 Number = chapters.number,
                 Date = dates
-            }).ToList();
+            }));
 
             return result;
         }
