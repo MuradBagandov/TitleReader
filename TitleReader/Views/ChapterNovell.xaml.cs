@@ -59,26 +59,9 @@ namespace TitleReader.Views
             HeaderPanel.BeginAnimation(DockPanel.OpacityProperty, HeaderAnimation);
         }
 
-        private void ContentScroll_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            
-        }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ContentScroll.ScrollToVerticalOffset(0);
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                NavigationService.GoBack();
-            }
-            catch
-            {
-                NavigationService.Navigate(new Uri("Views/MainTitle.xaml", UriKind.Relative));
-            }
         }
     }
 }

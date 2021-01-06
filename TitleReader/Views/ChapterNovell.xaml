@@ -7,7 +7,7 @@
       xmlns:local="clr-namespace:TitleReader.Views"
       d:DesignHeight="450" d:DesignWidth="800"
       DataContext="{Binding TitleModel, Source={StaticResource Locator}}"
-      Title="ChapterNovell" ShowsNavigationUI="False">
+      Title="ChapterNovell" ShowsNavigationUI="False" KeepAlive="True">
 
     <Grid Background="#202020"> 
         <Border x:Name="HeaderPanel"  Background="#303030" Panel.ZIndex="1"
@@ -28,7 +28,7 @@
             </Border.Resources>
 
             <DockPanel>
-                <Button Click="Button_Click_1" >
+                <Button Command="{Binding MainWindowViewModel.ShowTitleCommand}" >
                     <fa:ImageAwesome Icon="LongArrowLeft" Foreground="White"/>
                 </Button>
                 
@@ -57,7 +57,7 @@
 
         <ScrollViewer x:Name="ContentScroll" Background="#202020"
                       ScrollChanged="ContentScroll_ScrollChanged"
-                      VerticalScrollBarVisibility="Auto" MouseWheel="ContentScroll_MouseWheel">
+                      VerticalScrollBarVisibility="Auto">
             <ScrollViewer.Style>
                 <Style TargetType="ScrollViewer">
                     <Style.Triggers>

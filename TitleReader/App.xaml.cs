@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using TitleReader.Services.Interfaces;
 using TitleReader.Services;
 using TitleReader.ViewModels;
+using System.Windows.Controls;
 
 namespace TitleReader
 {
@@ -20,6 +21,7 @@ namespace TitleReader
     /// </summary>
     public partial class App : Application
     {
+
         public static IHost Host => _host ??= Program.CreateHostBuilder(Environment.GetCommandLineArgs()).Build();
         public static bool IsDesignMode { get; set; } = true;
         public static string CurrentDirectory => IsDesignMode == true ?
@@ -30,6 +32,7 @@ namespace TitleReader
 
         protected override async void OnStartup(StartupEventArgs e)
         {
+            
             base.OnStartup(e);
             IsDesignMode = false;
             var host = Host;
@@ -40,10 +43,10 @@ namespace TitleReader
 
         protected override void OnExit(ExitEventArgs e)
         {
+            
             base.OnExit(e);
-            var host = Host;
-            host.StopAsync().ConfigureAwait(false);
-            host.Dispose();
+            using (var host = Host)
+                host.StopAsync().ConfigureAwait(false);
         }
 
         internal static void ConfigureServices(HostBuilderContext host, IServiceCollection services)

@@ -24,44 +24,5 @@ namespace TitleReader.Views
         {
             InitializeComponent();
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateForward();
-        }
-
-
-        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            NavigateForward();
-        }
-
-        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            NavigateBack();
-        }
-
-        private void NavigateForward()
-        {
-            try
-            {
-                NavigationService.GoForward();
-            }
-            catch
-            {
-                NavigationService.Navigate(new Uri("Views/ChapterNovell.xaml", UriKind.Relative));
-            }
-        }
-        private void NavigateBack()
-        {
-            try
-            {
-                NavigationService.GoBack();
-            }
-            catch
-            {
-                NavigationService.Navigate(new Uri("Views/MainPage.aml", UriKind.Relative));
-            }
-        }
     }
 }

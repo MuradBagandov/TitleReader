@@ -185,10 +185,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Infrastuctures\ApplicationPages.cs" />
     <Compile Include="Infrastuctures\Commands\Base\Command.cs" />
     <Compile Include="Infrastuctures\Commands\LambdaCommand.cs" />
+    <Compile Include="Infrastuctures\Convertors\ApplicationPagesConvertor.cs" />
     <Compile Include="Infrastuctures\Convertors\Base\Convertor.cs" />
     <Compile Include="Infrastuctures\Convertors\Base\MultiConvertor.cs" />
+    <Compile Include="Infrastuctures\Convertors\ReverseListConverter.cs" />
     <Compile Include="Infrastuctures\Convertors\ChapterNameFormatToListBox.cs" />
     <Compile Include="Infrastuctures\Convertors\ConvertPropertyVisibility.cs" />
     <Compile Include="Infrastuctures\Convertors\ListToString.cs" />

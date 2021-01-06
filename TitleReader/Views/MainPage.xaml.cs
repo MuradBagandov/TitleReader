@@ -24,17 +24,5 @@ namespace TitleReader.Views
         {
             InitializeComponent();
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                NavigationService.GoForward();
-            }
-            catch
-            {
-                NavigationService.Navigate(new Uri("Views/MainTitle.xaml", UriKind.Relative));
-            }
-        }
     }
 }

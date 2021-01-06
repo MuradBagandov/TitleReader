@@ -63,7 +63,14 @@
                 <Border Style="{StaticResource ContentPanel}" >
 
                     <DockPanel Margin="5,2">
-                        <Image DockPanel.Dock="Left" Source="/Resources/Images/icon.png" Height="50" MouseDown="Image_MouseDown" Cursor="Hand"/>
+                        <Image DockPanel.Dock="Left" Source="/Resources/Images/icon.png" Height="50" Cursor="Hand">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseDown">
+                                    <i:InvokeCommandAction Command="{Binding MainWindowViewModel.ShowMainCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Image>
+                               
                         <Grid></Grid>
                     </DockPanel>
                 </Border>
@@ -81,7 +88,7 @@
                                Margin="1"/>
                             </Border>
                             <Button Content="Начать читать" Padding="10,5" Margin="0,5"
-                                    Command="{Binding FirstChapterCommand}" Click="Button_Click"/>
+                                    Command="{Binding FirstChapterCommand}"/>
                         </StackPanel>
                         <StackPanel  Orientation="Vertical" Grid.Column="1"  DataContext="{Binding Title}">
                             <StackPanel Orientation="Vertical" Margin="0,0 0 5">
@@ -229,8 +236,7 @@
                             <Button DockPanel.Dock="Right" 
                                     Padding="20,0" Margin="8"
                                     Content="Открыть"
-                                    Command="{Binding GetSelectChapterContentCommand}" 
-                                    Click="Button_Click"/>
+                                    Command="{Binding GetSelectChapterContentCommand}"/>
                             
                             <TextBlock Grid.Row="0" Text="Список глав" Margin="10"
                                    Style="{StaticResource TextBlockPropertyName}"/>
@@ -256,7 +262,8 @@
                                          SelectedItem="{Binding SelectChapter}"
                                          VirtualizingPanel.IsVirtualizing="True"
                                          VirtualizingPanel.VirtualizationMode="Recycling"
-                                         VirtualizingPanel.IsContainerVirtualizable="True">
+                                         VirtualizingPanel.IsContainerVirtualizable="True"
+                                         >
                                     <ListBox.Style >
                                         <Style TargetType="ListBox">
                                             <Style.Triggers>
@@ -275,8 +282,7 @@
                                         <DataTemplate DataType="{x:Type models:Chapter}">
                                             <Grid>
                                                 <ContentControl Panel.ZIndex="1" Cursor="Hand"
-                                                            DataContext="{Binding DataContext,RelativeSource={RelativeSource AncestorType=Page}}"
-                                                            MouseDoubleClick="Border_MouseDown">
+                                                            DataContext="{Binding DataContext,RelativeSource={RelativeSource AncestorType=Page}}">
                                                     <i:Interaction.Triggers>
                                                         <i:EventTrigger EventName="MouseDoubleClick">
                                                             <i:InvokeCommandAction Command="{Binding GetSelectChapterContentCommand}"/>

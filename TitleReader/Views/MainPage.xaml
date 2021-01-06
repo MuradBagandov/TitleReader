@@ -7,7 +7,7 @@
       xmlns:local="clr-namespace:TitleReader.Views"
       DataContext="{Binding MainWindowModel, Source={StaticResource Locator}}"
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="MainPage" ShowsNavigationUI="False">
+      Title="MainPage" ShowsNavigationUI="False" KeepAlive="True">
 
     <Grid >
         <Grid.RowDefinitions>
@@ -23,7 +23,7 @@
                     HorizontalAlignment="Right" Margin="15,8">
 
                     <DockPanel  Margin="10,5">
-                        <Button DockPanel.Dock="Right" Click="Button_Click" 
+                        <Button DockPanel.Dock="Right" 
                                 Command="{Binding LoadTitleCommand}">
                             <fa:ImageAwesome Icon="Search" Margin="2" Height="15"/>
                         </Button>

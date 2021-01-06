@@ -22,8 +22,7 @@
                     ViewportUnits="Absolute" Opacity="0.3"/>
     </Window.Background>
     <Grid >
-        <Frame Source="../MainPage.xaml" DataContext="{Binding MainTitleViewModel}"
-                   NavigationUIVisibility="Hidden" 
-                   VerticalAlignment="Stretch" />
+        <Frame Content="{Binding CurrentPage, Converter={conv:ApplicationPagesConvertor}, UpdateSourceTrigger=PropertyChanged}" 
+               NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

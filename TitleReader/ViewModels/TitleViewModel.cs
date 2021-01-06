@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using TitleReader.Infrastuctures;
 using TitleReader.Infrastuctures.Commands;
 using TitleReader.Models;
 using TitleReader.Services.Interfaces;
@@ -104,10 +105,12 @@ namespace TitleReader.ViewModels
             string result = ((string)_contentParser.GetContent(SelectChapter.Uri));
 
             SelectChapterContent = String.IsNullOrWhiteSpace(result) == true ? String.Empty : result;
+
+            MainWindowViewModel.CurrentPage = ApplicationPages.ChapterNovell;
         }
         #endregion
 
-        #region FirstChapterCommand
+        #region BeginReaderCommand
         public ICommand FirstChapterCommand { get; }
 
         private bool CanFirstChapterCommandExecuted(object p) => Title != null && Title?.Chapters != null && Title?.Chapters.Count > 0;
@@ -115,7 +118,7 @@ namespace TitleReader.ViewModels
         private void OnFirstChapterCommandExecute(object p)
         {
             SelectChapter = Title.Chapters.Last.Value;
-            GetSelectChapterContentCommand?.Execute(p);
+            GetSelectChapterContentCommand?.Execute(p);  
         }
         #endregion
 
