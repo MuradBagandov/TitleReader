@@ -67,6 +67,25 @@ namespace TitleReader.ViewModels
         }
         #endregion
 
+        #region RefreshTitleCommand
+        public ICommand RefreshTitleCommand { get; }
+
+        private bool CanRefreshTitleCommandExecuted(object p)
+            => MainTitleViewModel.Title != null;
+
+        private void OnRefreshTitleCommandExecute(object p)
+        {
+            try
+            {
+                Title title =  _parser.GetTitle(MainTitleViewModel.Title.Uri);
+                if (!MainTitleViewModel.Equals(title))
+                    MainTitleViewModel.Title = title;
+                CurrentPage = ApplicationPages.Title;
+            }
+            catch { }
+        }
+        #endregion
+
         #region ShowTitleCommand
         public ICommand ShowTitleCommand { get; }
 
@@ -97,6 +116,7 @@ namespace TitleReader.ViewModels
             MainTitleViewModel.MainWindowViewModel = this;
 
             LoadTitleCommand = new LambdaCommand(OnLoadTitleCommandExecute, CanLoadTitleCommandExecuted);
+            RefreshTitleCommand = new LambdaCommand(OnRefreshTitleCommandExecute, CanRefreshTitleCommandExecuted);
             ShowMainCommand = new LambdaCommand(OnShowMainCommandExecute);
             ShowTitleCommand = new LambdaCommand(OnShowTitleCommandExecute);
             ShowChapterCommand = new LambdaCommand(OnShowChapterCommandExecute);

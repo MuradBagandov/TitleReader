@@ -88,7 +88,7 @@
                                Margin="1"/>
                             </Border>
                             <Button Content="Начать читать" Padding="10,5" Margin="0,5"
-                                    Command="{Binding FirstChapterCommand}"/>
+                                    Command="{Binding BeginToReadCommand}"/>
                         </StackPanel>
                         <StackPanel  Orientation="Vertical" Grid.Column="1"  DataContext="{Binding Title}">
                             <StackPanel Orientation="Vertical" Margin="0,0 0 5">
@@ -236,19 +236,14 @@
                             <Button DockPanel.Dock="Right" 
                                     Padding="20,0" Margin="8"
                                     Content="Открыть"
-                                    Command="{Binding GetSelectChapterContentCommand}"/>
+                                    Command="{Binding ReadSelectChapterCommand}"/>
                             
                             <TextBlock Grid.Row="0" Text="Список глав" Margin="10"
                                    Style="{StaticResource TextBlockPropertyName}"/>
                            
                         </DockPanel>
                         <Border Grid.Row="1" BorderThickness="0, 0.3" BorderBrush="#606060">
-                            <Border.Resources>
-                                <Style TargetType="Hyperlink">
-                                    <Setter Property="Command" Value="{Binding GetSelectChapterContentCommand}"/>
-                                </Style>
-                            </Border.Resources>
-                            
+
                             <Grid>
                                 <TextBlock Text="Нет глав!" TextAlignment="Center"
                                        Style="{StaticResource TextBlockPropertyValue}"
@@ -285,7 +280,7 @@
                                                             DataContext="{Binding DataContext,RelativeSource={RelativeSource AncestorType=Page}}">
                                                     <i:Interaction.Triggers>
                                                         <i:EventTrigger EventName="MouseDoubleClick">
-                                                            <i:InvokeCommandAction Command="{Binding GetSelectChapterContentCommand}"/>
+                                                            <i:InvokeCommandAction Command="{Binding ReadSelectChapterCommand}"/>
                                                         </i:EventTrigger>
                                                     </i:Interaction.Triggers>
                                                     <Border Opacity="0.1" Background="White"/>

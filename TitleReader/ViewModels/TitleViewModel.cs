@@ -17,7 +17,6 @@ namespace TitleReader.ViewModels
     internal class TitleViewModel : Base.ViewModel
     {
 
-
         #region Properties
         public MainWindowViewModel MainWindowViewModel { get; internal set; }
 
@@ -30,7 +29,15 @@ namespace TitleReader.ViewModels
             set
             {
                 if (Set(ref _title, value))
-                    RefreshTitleCommand?.Execute(default);
+                {
+                    if (Title?.Cover != null)
+                    {
+                        WebClient client = new WebClient();
+
+                        var coverdata = client.DownloadData(Title.Cover);
+                        Cover = BitmapSourceFromByteArray(coverdata);
+                    }
+                } 
             }
         }
         #endregion
@@ -75,74 +82,56 @@ namespace TitleReader.ViewModels
 
         #region Commands
 
-        #region RefreshTitleCommand
-        public ICommand RefreshTitleCommand { get; }
+        #region ReadSelectChapterCommand
+        public ICommand ReadSelectChapterCommand { get; }
 
-        private bool CanRefreshTitleCommandExecuted(object p)
-            => true;
+        private bool CanReadSelectChapterCommandExecuted(object p) => SelectChapter != null;
 
-        private void OnRefreshTitleCommandExecute(object p)
+
+        private void OnReadSelectChapterCommandExecute(object p)
         {
-
-            if (Title?.Cover != null)
-            {
-                WebClient client = new WebClient();
-
-                var coverdata = client.DownloadData(Title.Cover);
-                Cover = BitmapSourceFromByteArray(coverdata);
-            }
-        }
-        #endregion
-
-        #region GetSelectChapterContentCommand
-        public ICommand GetSelectChapterContentCommand { get; }
-
-        private bool CanGetSelectChapterContentCommandExecuted(object p) => SelectChapter != null;
-
-
-        private void OnGetSelectChapterContentCommandExecute(object p)
-        {
-            string result = ((string)_contentParser.GetContent(SelectChapter.Uri));
-
-            SelectChapterContent = String.IsNullOrWhiteSpace(result) == true ? String.Empty : result;
+            LoadSelectChapterContent();
 
             MainWindowViewModel.CurrentPage = ApplicationPages.ChapterNovell;
         }
         #endregion
 
-        #region BeginReaderCommand
-        public ICommand FirstChapterCommand { get; }
+        #region BeginToReadCommand
+        public ICommand BeginToReadCommand { get; }
 
-        private bool CanFirstChapterCommandExecuted(object p) => Title != null && Title?.Chapters != null && Title?.Chapters.Count > 0;
+        private bool CanBeginToReadCommandExecuted(object p) => Title != null && Title?.Chapters != null && Title?.Chapters.Count > 0;
 
-        private void OnFirstChapterCommandExecute(object p)
+        private void OnBeginToReadCommandExecute(object p)
         {
             SelectChapter = Title.Chapters.Last.Value;
-            GetSelectChapterContentCommand?.Execute(p);  
+            LoadSelectChapterContent();
+            MainWindowViewModel.CurrentPage = ApplicationPages.ChapterNovell;
         }
         #endregion
 
-        #region NextChapterCommand
-        public ICommand NextChapterCommand { get; }
+        #region ReadNextChapterCommand
+        public ICommand ReadNextChapterCommand { get; }
 
-        private bool CanNextChapterCommandExecuted(object p) => _selectLinkedChapter != null && _selectLinkedChapter?.Previous != null;
+        private bool CanReadNextChapterCommandExecuted(object p) => _selectLinkedChapter != null && _selectLinkedChapter?.Previous != null;
 
-        private void OnNextChapterCommandExecute(object p)
+        private void OnReadNextChapterCommandExecute(object p)
         {
             SelectChapter = _selectLinkedChapter.Previous.Value;
-            GetSelectChapterContentCommand?.Execute(p);
+            LoadSelectChapterContent();
+            MainWindowViewModel.CurrentPage = ApplicationPages.ChapterNovell;
         }
         #endregion
 
-        #region PrevoiusChapterCommand
-        public ICommand PrevoiusChapterCommand { get; }
+        #region ReadPrevoiusChapterCommand
+        public ICommand ReadPrevoiusChapterCommand { get; }
 
-        private bool CanPrevoiusChapterCommandExecuted(object p) => _selectLinkedChapter != null && _selectLinkedChapter?.Next != null;
+        private bool CanReadPrevoiusChapterCommandExecuted(object p) => _selectLinkedChapter != null && _selectLinkedChapter?.Next != null;
 
-        private void OnPrevoiusChapterCommandExecute(object p)
+        private void OnReadPrevoiusChapterCommandExecute(object p)
         {
             SelectChapter = _selectLinkedChapter.Next.Value;
-            GetSelectChapterContentCommand?.Execute(p);
+            LoadSelectChapterContent();
+            MainWindowViewModel.CurrentPage = ApplicationPages.ChapterNovell;
         }
         #endregion
 
@@ -159,18 +148,17 @@ namespace TitleReader.ViewModels
         {
             _contentParser = ContentParser;
 
-            RefreshTitleCommand = new LambdaCommand(OnRefreshTitleCommandExecute, CanRefreshTitleCommandExecuted);
-            GetSelectChapterContentCommand = new LambdaCommand(OnGetSelectChapterContentCommandExecute, CanGetSelectChapterContentCommandExecuted);
-            PrevoiusChapterCommand = new LambdaCommand(OnPrevoiusChapterCommandExecute, CanPrevoiusChapterCommandExecuted);
-            NextChapterCommand = new LambdaCommand(OnNextChapterCommandExecute, CanNextChapterCommandExecuted);
-            FirstChapterCommand = new LambdaCommand(OnFirstChapterCommandExecute, CanFirstChapterCommandExecuted);
+            ReadSelectChapterCommand = new LambdaCommand(OnReadSelectChapterCommandExecute, CanReadSelectChapterCommandExecuted);
+            ReadPrevoiusChapterCommand = new LambdaCommand(OnReadPrevoiusChapterCommandExecute, CanReadPrevoiusChapterCommandExecuted);
+            ReadNextChapterCommand = new LambdaCommand(OnReadNextChapterCommandExecute, CanReadNextChapterCommandExecuted);
+            BeginToReadCommand = new LambdaCommand(OnBeginToReadCommandExecute, CanBeginToReadCommandExecuted);
 
             _defaultCover = new BitmapImage(new Uri(@"/Resources/Images/no-image.png", UriKind.Relative));
             Cover = _defaultCover;
         }
 
 
-        public static BitmapSource BitmapSourceFromByteArray(byte[] buffer)
+        private static BitmapSource BitmapSourceFromByteArray(byte[] buffer)
         {
             var bitmap = new BitmapImage();
 
@@ -184,6 +172,23 @@ namespace TitleReader.ViewModels
 
             bitmap.Freeze(); 
             return bitmap;
+        }
+
+        private void LoadSelectChapterContent()
+        {
+            if (SelectChapter != null)
+            {
+                try
+                {
+                    string result = ((string)_contentParser.GetContent(SelectChapter.Uri));
+
+                    SelectChapterContent = String.IsNullOrWhiteSpace(result) == true ? String.Empty : result;
+                }
+                catch
+                {
+
+                }
+            }
         }
     }
 }

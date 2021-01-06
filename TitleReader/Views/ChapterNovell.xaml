@@ -86,10 +86,10 @@
                     </Grid.ColumnDefinitions>
 
                     <Button Grid.Column="0" Content="Предыдущая глава" Margin="0,0,10,0"
-                            Command="{Binding PrevoiusChapterCommand}" Click="Button_Click"/>
+                            Command="{Binding ReadPrevoiusChapterCommand}" Click="Button_Click"/>
 
                     <Button Grid.Column="1" Content="Следующая глава"  Margin="10,0,0,0"
-                            Command="{Binding NextChapterCommand}" Click="Button_Click"/>
+                            Command="{Binding ReadNextChapterCommand}" Click="Button_Click"/>
                 </Grid>
             </StackPanel>
 

@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace TitleReader.Infrastuctures.Commands.Base
 {
-    internal abstract class Command:ICommand
+    internal abstract class Command : ICommand
     {
         public event EventHandler CanExecuteChanged
         {
