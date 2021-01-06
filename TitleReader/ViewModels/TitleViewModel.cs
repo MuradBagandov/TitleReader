@@ -88,9 +88,10 @@ namespace TitleReader.ViewModels
         private bool CanReadSelectChapterCommandExecuted(object p) => SelectChapter != null;
 
 
-        private void OnReadSelectChapterCommandExecute(object p)
+        private async void OnReadSelectChapterCommandExecute(object p)
         {
-            LoadSelectChapterContent();
+            MainWindowViewModel.CurrentPage = ApplicationPages.LoadingPage;
+            await LoadSelectChapterContent();
 
             MainWindowViewModel.CurrentPage = ApplicationPages.ChapterNovell;
         }
@@ -101,10 +102,11 @@ namespace TitleReader.ViewModels
 
         private bool CanBeginToReadCommandExecuted(object p) => Title != null && Title?.Chapters != null && Title?.Chapters.Count > 0;
 
-        private void OnBeginToReadCommandExecute(object p)
+        private async void OnBeginToReadCommandExecute(object p)
         {
+            MainWindowViewModel.CurrentPage = ApplicationPages.LoadingPage;
             SelectChapter = Title.Chapters.Last.Value;
-            LoadSelectChapterContent();
+            await LoadSelectChapterContent();
             MainWindowViewModel.CurrentPage = ApplicationPages.ChapterNovell;
         }
         #endregion
@@ -114,10 +116,11 @@ namespace TitleReader.ViewModels
 
         private bool CanReadNextChapterCommandExecuted(object p) => _selectLinkedChapter != null && _selectLinkedChapter?.Previous != null;
 
-        private void OnReadNextChapterCommandExecute(object p)
+        private async void OnReadNextChapterCommandExecute(object p)
         {
+            MainWindowViewModel.CurrentPage = ApplicationPages.LoadingPage;
             SelectChapter = _selectLinkedChapter.Previous.Value;
-            LoadSelectChapterContent();
+            await LoadSelectChapterContent();
             MainWindowViewModel.CurrentPage = ApplicationPages.ChapterNovell;
         }
         #endregion
@@ -127,10 +130,11 @@ namespace TitleReader.ViewModels
 
         private bool CanReadPrevoiusChapterCommandExecuted(object p) => _selectLinkedChapter != null && _selectLinkedChapter?.Next != null;
 
-        private void OnReadPrevoiusChapterCommandExecute(object p)
+        private async void OnReadPrevoiusChapterCommandExecute(object p)
         {
+            MainWindowViewModel.CurrentPage = ApplicationPages.LoadingPage;
             SelectChapter = _selectLinkedChapter.Next.Value;
-            LoadSelectChapterContent();
+            await LoadSelectChapterContent();
             MainWindowViewModel.CurrentPage = ApplicationPages.ChapterNovell;
         }
         #endregion
@@ -174,13 +178,13 @@ namespace TitleReader.ViewModels
             return bitmap;
         }
 
-        private void LoadSelectChapterContent()
+        private async Task LoadSelectChapterContent()
         {
             if (SelectChapter != null)
             {
                 try
                 {
-                    string result = ((string)_contentParser.GetContent(SelectChapter.Uri));
+                    string result = (string) await _contentParser.GetContentAsync(SelectChapter.Uri);
 
                     SelectChapterContent = String.IsNullOrWhiteSpace(result) == true ? String.Empty : result;
                 }

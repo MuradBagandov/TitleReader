@@ -10,6 +10,7 @@ namespace TitleReader.Infrastuctures
     {
         Main,
         Title,
-        ChapterNovell
+        ChapterNovell, 
+        LoadingPage
     }
 }

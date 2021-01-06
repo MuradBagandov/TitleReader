@@ -20,6 +20,7 @@ namespace TitleReader.Infrastuctures.Convertors
         static Page MainPage = new Views.MainPage();
         static Page TitlePage = new Views.MainTitle();
         static Page ChapterPage = new Views.ChapterNovell();
+        static Page LoadingPage = new Views.LoadingPage();
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (!(value is ApplicationPages page))
@@ -30,6 +31,7 @@ namespace TitleReader.Infrastuctures.Convertors
                 ApplicationPages.Main => MainPage,
                 ApplicationPages.Title => TitlePage,
                 ApplicationPages.ChapterNovell => ChapterPage,
+                ApplicationPages.LoadingPage => LoadingPage,
                 _ => throw new NotImplementedException(),
             };
         }

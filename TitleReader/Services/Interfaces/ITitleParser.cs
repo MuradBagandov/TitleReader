@@ -11,5 +11,7 @@ namespace TitleReader.Services.Interfaces
     {
         Title GetTitle(object p);
 
+        Task<Title> GetTitleAsync(object p);
+
     }
 }

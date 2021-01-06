@@ -55,15 +55,20 @@ namespace TitleReader.ViewModels
         private bool CanLoadTitleCommandExecuted(object p)
             => Uri.TryCreate(Adrress, UriKind.Absolute, out Uri add);
 
-        private void OnLoadTitleCommandExecute(object p)
+        private async void OnLoadTitleCommandExecute(object p)
         {
             MainTitleViewModel.Title = null;
             try
             {
-                MainTitleViewModel.Title = _parser.GetTitle(new Uri(Adrress));
+                CurrentPage = ApplicationPages.LoadingPage;
+                var title  = await _parser.GetTitleAsync(new Uri(Adrress));
+                MainTitleViewModel.Title = title;
                 CurrentPage = ApplicationPages.Title;
             }
-            catch { }
+            catch 
+            { 
+                CurrentPage = ApplicationPages.Main; 
+            }
         }
         #endregion
 

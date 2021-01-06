@@ -99,6 +99,11 @@ namespace TitleReader.Services
             return title;
         }
 
+        public async Task<Title> GetTitleAsync(object p)
+        {
+            return await Task.Run(()=>GetTitle(p));
+        }
+
         private LinkedList<Chapter> GetChapters(string web_string)
         {
             LinkedList<Chapter> result;

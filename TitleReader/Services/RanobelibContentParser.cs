@@ -39,5 +39,10 @@ namespace TitleReader.Services
             return result.ToString();
 
         }
+
+        public async Task<object> GetContentAsync(object p)
+        {
+            return await Task.Run(() => GetContent(p));
+        }
     }
 }

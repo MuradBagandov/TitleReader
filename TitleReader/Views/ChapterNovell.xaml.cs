@@ -59,7 +59,7 @@ namespace TitleReader.Views
             HeaderPanel.BeginAnimation(DockPanel.OpacityProperty, HeaderAnimation);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ContentText_TextChanged(object sender, TextChangedEventArgs e)
         {
             ContentScroll.ScrollToVerticalOffset(0);
         }

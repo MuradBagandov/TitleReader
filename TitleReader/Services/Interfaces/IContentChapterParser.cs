@@ -10,5 +10,7 @@ namespace TitleReader.Services.Interfaces
     interface IContentChapterParser
     {
         object GetContent(object p);
+
+        Task<object> GetContentAsync(object p);
     }
 }

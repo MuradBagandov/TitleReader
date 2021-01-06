@@ -73,12 +73,12 @@
 
 
             <StackPanel MaxWidth="900">
-                <TextBlock x:Name="ContentText" LineHeight="22" TextWrapping="Wrap"
+                <TextBox x:Name="ContentText" TextWrapping="Wrap" IsReadOnly="True"
                        TextAlignment="Justify"
-                       Background="Transparent" Foreground="White"
+                       Background="Transparent" Foreground="White" BorderThickness="0"
                        FontSize="16" FontFamily="Helvetica"
                        Padding="10,80,10,10" 
-                       Text="{Binding SelectChapterContent}"/>
+                       Text="{Binding SelectChapterContent}" TextChanged="ContentText_TextChanged"/>
                 <Grid Margin="0,10" Height="35">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -86,10 +86,10 @@
                     </Grid.ColumnDefinitions>
 
                     <Button Grid.Column="0" Content="Предыдущая глава" Margin="0,0,10,0"
-                            Command="{Binding ReadPrevoiusChapterCommand}" Click="Button_Click"/>
+                            Command="{Binding ReadPrevoiusChapterCommand}"/>
 
                     <Button Grid.Column="1" Content="Следующая глава"  Margin="10,0,0,0"
-                            Command="{Binding ReadNextChapterCommand}" Click="Button_Click"/>
+                            Command="{Binding ReadNextChapterCommand}"/>
                 </Grid>
             </StackPanel>
 
