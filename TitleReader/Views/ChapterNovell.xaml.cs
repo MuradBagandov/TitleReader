@@ -19,10 +19,10 @@ namespace TitleReader.Views
     /// <summary>
     /// Логика взаимодействия для ChapterNovell.xaml
     /// </summary>
-    public partial class ChapterNovell : Page
+    public partial class ChapterNovell : Pages.BasePage
     {
         private bool _isAnimated = false;
-        public ChapterNovell()
+        public ChapterNovell(): base()
         {
             InitializeComponent();
         }

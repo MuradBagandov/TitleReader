@@ -32,6 +32,7 @@ namespace TitleReader.Infrastuctures.Convertors
                 ApplicationPages.Title => TitlePage,
                 ApplicationPages.ChapterNovell => ChapterPage,
                 ApplicationPages.LoadingPage => LoadingPage,
+                ApplicationPages.None => null,
                 _ => throw new NotImplementedException(),
             };
         }

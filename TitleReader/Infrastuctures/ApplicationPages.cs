@@ -8,6 +8,7 @@ namespace TitleReader.Infrastuctures
 {
    public enum ApplicationPages
     {
+        None,
         Main,
         Title,
         ChapterNovell, 

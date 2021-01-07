@@ -1,4 +1,4 @@
-﻿<Page x:Class="TitleReader.Views.MainTitle" mc:Ignorable="d" 
+﻿<pages:BasePage x:Class="TitleReader.Views.MainTitle" mc:Ignorable="d" 
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,6 +7,7 @@
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       
       xmlns:local="clr-namespace:TitleReader.Views"
+      xmlns:pages="clr-namespace:TitleReader.Views.Pages"
       xmlns:vm="clr-namespace:TitleReader.ViewModels"
       xmlns:models="clr-namespace:TitleReader.Models"
       xmlns:conv="clr-namespace:TitleReader.Infrastuctures.Convertors"
@@ -317,4 +318,4 @@
             </StackPanel>
         </ScrollViewer>
     </Grid>
-</Page>
+</pages:BasePage>

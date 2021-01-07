@@ -90,10 +90,7 @@ namespace TitleReader.ViewModels
 
         private async void OnReadSelectChapterCommandExecute(object p)
         {
-            MainWindowViewModel.CurrentPage = ApplicationPages.LoadingPage;
-            await LoadSelectChapterContent();
-
-            MainWindowViewModel.CurrentPage = ApplicationPages.ChapterNovell;
+            await ShowSelectChapter();
         }
         #endregion
 
@@ -104,10 +101,8 @@ namespace TitleReader.ViewModels
 
         private async void OnBeginToReadCommandExecute(object p)
         {
-            MainWindowViewModel.CurrentPage = ApplicationPages.LoadingPage;
             SelectChapter = Title.Chapters.Last.Value;
-            await LoadSelectChapterContent();
-            MainWindowViewModel.CurrentPage = ApplicationPages.ChapterNovell;
+            await ShowSelectChapter();
         }
         #endregion
 
@@ -118,10 +113,8 @@ namespace TitleReader.ViewModels
 
         private async void OnReadNextChapterCommandExecute(object p)
         {
-            MainWindowViewModel.CurrentPage = ApplicationPages.LoadingPage;
             SelectChapter = _selectLinkedChapter.Previous.Value;
-            await LoadSelectChapterContent();
-            MainWindowViewModel.CurrentPage = ApplicationPages.ChapterNovell;
+            await ShowSelectChapter();
         }
         #endregion
 
@@ -132,11 +125,13 @@ namespace TitleReader.ViewModels
 
         private async void OnReadPrevoiusChapterCommandExecute(object p)
         {
-            MainWindowViewModel.CurrentPage = ApplicationPages.LoadingPage;
+
             SelectChapter = _selectLinkedChapter.Next.Value;
-            await LoadSelectChapterContent();
-            MainWindowViewModel.CurrentPage = ApplicationPages.ChapterNovell;
+            await ShowSelectChapter();
+
         }
+
+       
         #endregion
 
         #endregion
@@ -176,6 +171,20 @@ namespace TitleReader.ViewModels
 
             bitmap.Freeze(); 
             return bitmap;
+        }
+
+        private async Task ShowSelectChapter()
+        {
+            try
+            {
+                MainWindowViewModel.CurrentPage = ApplicationPages.LoadingPage;
+                await LoadSelectChapterContent();
+                MainWindowViewModel.CurrentPage = ApplicationPages.ChapterNovell;
+            }
+            catch
+            {
+
+            }
         }
 
         private async Task LoadSelectChapterContent()

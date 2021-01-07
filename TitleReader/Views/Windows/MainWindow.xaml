@@ -22,6 +22,8 @@
                     ViewportUnits="Absolute" Opacity="0.3"/>
     </Window.Background>
     <Grid >
+        <Frame Content="{Binding LoadingPage, Converter={conv:ApplicationPagesConvertor}, UpdateSourceTrigger=PropertyChanged}" 
+               NavigationUIVisibility="Hidden" Opacity="0.8" Panel.ZIndex="1"/>
         <Frame Content="{Binding CurrentPage, Converter={conv:ApplicationPagesConvertor}, UpdateSourceTrigger=PropertyChanged}" 
                NavigationUIVisibility="Hidden"/>
     </Grid>

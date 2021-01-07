@@ -18,7 +18,7 @@ namespace TitleReader.Views
     /// <summary>
     /// Логика взаимодействия для LoadingPage.xaml
     /// </summary>
-    public partial class LoadingPage : Page
+    public partial class LoadingPage : Pages.BasePage
     {
         public LoadingPage()
         {

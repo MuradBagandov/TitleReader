@@ -27,7 +27,7 @@ namespace TitleReader.Services
                 throw new Exception("Ошибка подключения");
             }
 
-            var content_matches = Regex.Matches(_web_string, @"((?<=<p>)[^<]+(?=<\/p>))|((?<=>)[^<]+(?=<br>))");
+            var content_matches = Regex.Matches(_web_string, @"((?<=<p>)[^<]+(?=<\/p>))|((?<=>)[^<]+(?=<br>))|((?<=<p><[^<>]+>)[^<>]+(?=<[^<>]+><\/p>))");
 
 
 

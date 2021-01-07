@@ -18,7 +18,7 @@ namespace TitleReader.Views
     /// <summary>
     /// Логика взаимодействия для MainTitle.xaml
     /// </summary>
-    public partial class MainTitle : Page
+    public partial class MainTitle : Pages.BasePage
     {
         public MainTitle()
         {
