@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="LoadingWindow" Height="200" Width="150" 
         AllowsTransparency="True" Background="Transparent" WindowStyle="None" ShowInTaskbar="False" WindowStartupLocation="CenterOwner">
-    <Border CornerRadius="5" Background="White">
+    <Border CornerRadius="5" Background="White" BorderThickness="0.6" BorderBrush="#606060">
         <DockPanel Margin="5,10">
             
             <Button x:Name="Button_Close" DockPanel.Dock="Bottom" Padding="5" Click="Button_Click">Отмена</Button>

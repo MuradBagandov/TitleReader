@@ -90,13 +90,22 @@ namespace TitleReader.ViewModels
 
         private async void OnReadSelectChapterCommandExecute(object p)
         {
+            var (cancellation, close) = _userDialog.ShowLoading();
+            _contentParser.Cancellation = cancellation;
+
             try
             {
                 await ShowSelectChapter();
             }
+            catch (OperationCanceledException){}
             catch (Exception e)
             {
+                close();
                 _userDialog.ShowMessage(e.Message, Services.Enums.ShowMessageIcon.Error);
+            }
+            finally
+            {
+                close();
             }
         }
         #endregion
@@ -109,13 +118,22 @@ namespace TitleReader.ViewModels
         private async void OnBeginToReadCommandExecute(object p)
         {
             SelectChapter = Title.Chapters.Last.Value;
+            var (cancellation, close) = _userDialog.ShowLoading();
+            _contentParser.Cancellation = cancellation;
+
             try
             {
                 await ShowSelectChapter();
             }
+            catch (OperationCanceledException){}
             catch (Exception e)
             {
+                close();
                 _userDialog.ShowMessage(e.Message, Services.Enums.ShowMessageIcon.Error);
+            }
+            finally
+            {
+                close();
             }
         }
         #endregion
@@ -128,14 +146,26 @@ namespace TitleReader.ViewModels
         private async void OnReadNextChapterCommandExecute(object p)
         {
             SelectChapter = _selectLinkedChapter.Previous.Value;
+            var (cancellation, close) = _userDialog.ShowLoading();
+            _contentParser.Cancellation = cancellation;
+
             try
             {
                 await ShowSelectChapter();
             }
-            catch (Exception e)
+            catch (OperationCanceledException)
             {
                 SelectChapter = _selectLinkedChapter.Next.Value;
+            }
+            catch (Exception e)
+            {
+                close();
+                SelectChapter = _selectLinkedChapter.Next.Value;
                 _userDialog.ShowMessage(e.Message, Services.Enums.ShowMessageIcon.Error);
+            }
+            finally
+            {
+                close();
             }
         }
         #endregion
@@ -147,16 +177,27 @@ namespace TitleReader.ViewModels
 
         private async void OnReadPrevoiusChapterCommandExecute(object p)
         {
-
             SelectChapter = _selectLinkedChapter.Next.Value;
+            var (cancellation, close) = _userDialog.ShowLoading();
+            _contentParser.Cancellation = cancellation;
+           
             try
             {
                 await ShowSelectChapter();
             }
-            catch (Exception e)
+            catch (OperationCanceledException)
             {
                 SelectChapter = _selectLinkedChapter.Previous.Value;
+            }
+            catch (Exception e)
+            {
+                close();
+                SelectChapter = _selectLinkedChapter.Previous.Value;
                 _userDialog.ShowMessage(e.Message, Services.Enums.ShowMessageIcon.Error);  
+            }
+            finally
+            {
+                close();
             }
         }
 
@@ -206,17 +247,8 @@ namespace TitleReader.ViewModels
 
         private async Task ShowSelectChapter()
         {
-            try
-            {
-                await LoadSelectChapterContent().ConfigureAwait(false);
-                MainWindowViewModel.CurrentPage = ApplicationPages.ChapterNovell;
-
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
- 
+            await LoadSelectChapterContent().ConfigureAwait(false);
+            MainWindowViewModel.CurrentPage = ApplicationPages.ChapterNovell;   
         }
 
         private async Task LoadSelectChapterContent()

@@ -12,8 +12,6 @@ namespace TitleReader.Services.Interfaces
     {
         CancellationToken Cancellation { get; set; }
 
-        IProgress<double> Progress { get; set; }
-
         Title GetTitle(object p);
 
         Task<Title> GetTitleAsync(object p);

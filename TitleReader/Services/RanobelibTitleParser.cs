@@ -17,8 +17,6 @@ namespace TitleReader.Services
 
         public CancellationToken Cancellation { get; set; }
 
-        public IProgress<double> Progress { get; set; }
-
         public RanobelibTitleParser()
         {
 
@@ -29,9 +27,6 @@ namespace TitleReader.Services
                     {
                         _client.CancelAsync();
                     }
-                       
-                if (e.ProgressPercentage == 1)
-                    Progress?.Report(e.ProgressPercentage);
             };
         }
 
@@ -76,6 +71,52 @@ namespace TitleReader.Services
 
             return GetTitle(_web_string, uri);
         }
+
+        
+
+
+        public object GetContent(object p)
+        {
+            if (!(p is Uri uri))
+                throw new ArgumentException();
+
+            string _web_string;
+            try
+            {
+                _web_string = _client.DownloadString(uri);
+            }
+            catch
+            {
+                throw new Exception("Произошла ошибка при загрузке ресурса");
+            }
+
+            return GetChapterContent(_web_string);
+
+        }
+
+       
+
+        public async Task<object> GetContentAsync(object p)
+        {
+            if (!(p is Uri uri))
+                throw new ArgumentException();
+
+            string _web_string;
+            try
+            {
+                _web_string = await _client.DownloadStringTaskAsync(uri);
+            }
+            catch (Exception e)
+            {
+                if (e.Message == "Запрос был прерван: Запрос отменен.")
+                    throw new OperationCanceledException(e.Message);
+                else
+                    throw new Exception("Произошла ошибка при загрузке ресурса");
+            }
+
+            return GetChapterContent(_web_string);
+        }
+
 
         private Title GetTitle(string page, Uri uri)
         {
@@ -156,12 +197,12 @@ namespace TitleReader.Services
             string name;
             string number;
             Uri uri;
-            
 
-            var chapter_matches = Regex.Matches(page, 
+
+            var chapter_matches = Regex.Matches(page,
                 @"<a\s*class=.link-default.\s*title=([^<>]*)href=.(.*).>([^<]*)(?=<)");
 
-            var chapter_dates_matches = Regex.Matches(page, 
+            var chapter_dates_matches = Regex.Matches(page,
                 @"class=.chapter-item__date.>\s*([^<>\n]*)");
 
             if (chapter_matches.Count == 0)
@@ -191,25 +232,9 @@ namespace TitleReader.Services
             return result;
         }
 
-
-        public object GetContent(object p)
+        private static string GetChapterContent(string page)
         {
-            if (!(p is Uri uri))
-                throw new ArgumentException();
-
-            string _web_string;
-            try
-            {
-                _web_string = _client.DownloadString(uri);
-            }
-            catch
-            {
-                throw new Exception("Произошла ошибка при загрузке ресурса");
-            }
-
-            var content_matches = Regex.Matches(_web_string, @"((?<=<p>)[^<]+(?=<\/p>))|((?<=>)[^<]+(?=<br>))|((?<=<p><[^<>]+>)[^<>]+(?=<[^<>]+><\/p>))");
-
-
+            var content_matches = Regex.Matches(page, @"((?<=<p>)[^<]+(?=<\/p>))|((?<=>)[^<]+(?=<br>))|((?<=<p><[^<>]+>)[^<>]+(?=<[^<>]+><\/p>))");
 
             StringBuilder result = new StringBuilder();
 
@@ -217,25 +242,7 @@ namespace TitleReader.Services
                 result.Append($"{i.Value.Replace("\n", "")}\n\n");
 
             return result.ToString();
-
         }
-
-        public async Task<object> GetContentAsync(object p)
-        {
-            try
-            {
-                return await Task.Run(() => GetContent(p));
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-
-
-
-
-
 
         #region Dispose
         private bool disposed = false;
