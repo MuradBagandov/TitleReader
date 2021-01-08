@@ -202,10 +202,8 @@
       <DependentUpon>ColourfulDarkTheme.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\Enums\UserDialogEnums.cs" />
-    <Compile Include="Services\Interfaces\IContentChapterParser.cs" />
     <Compile Include="Services\Interfaces\ITitleParser.cs" />
     <Compile Include="Services\Interfaces\IUserDialog.cs" />
-    <Compile Include="Services\RanobelibContentParser.cs" />
     <Compile Include="Services\RanobelibTitleParser.cs" />
     <Compile Include="Services\SettingsManager.cs" />
     <Compile Include="Services\UserDialog.cs" />

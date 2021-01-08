@@ -15,7 +15,6 @@ namespace TitleReader.Services
     {
         private WebClient _client = new WebClient() { Encoding = Encoding.UTF8 };
 
-
         public CancellationToken Cancellation { get; set; }
 
         public IProgress<double> Progress { get; set; }
@@ -193,10 +192,49 @@ namespace TitleReader.Services
         }
 
 
+        public object GetContent(object p)
+        {
+            if (!(p is Uri uri))
+                throw new ArgumentException();
 
-        
+            string _web_string;
+            try
+            {
+                _web_string = _client.DownloadString(uri);
+            }
+            catch
+            {
+                throw new Exception("Произошла ошибка при загрузке ресурса");
+            }
 
-       
+            var content_matches = Regex.Matches(_web_string, @"((?<=<p>)[^<]+(?=<\/p>))|((?<=>)[^<]+(?=<br>))|((?<=<p><[^<>]+>)[^<>]+(?=<[^<>]+><\/p>))");
+
+
+
+            StringBuilder result = new StringBuilder();
+
+            foreach (Match i in content_matches)
+                result.Append($"{i.Value.Replace("\n", "")}\n\n");
+
+            return result.ToString();
+
+        }
+
+        public async Task<object> GetContentAsync(object p)
+        {
+            try
+            {
+                return await Task.Run(() => GetContent(p));
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+
+
+
 
 
         #region Dispose

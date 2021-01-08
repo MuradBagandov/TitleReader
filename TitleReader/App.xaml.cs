@@ -54,7 +54,6 @@ namespace TitleReader
         {
             services.AddSingleton<ITitleParser, RanobelibTitleParser>();
             services.AddSingleton<IUserDialog, UserDialog>();
-            services.AddSingleton<IContentChapterParser, RanobelibContentParser>();
             services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<TitleViewModel>();
         }

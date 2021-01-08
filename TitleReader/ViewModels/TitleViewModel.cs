@@ -167,13 +167,13 @@ namespace TitleReader.ViewModels
 
 
         #region Fields
-        private IContentChapterParser _contentParser;
+        private ITitleParser _contentParser;
         private IUserDialog _userDialog;
         private LinkedListNode<Chapter> _selectLinkedChapter;
         private BitmapSource _defaultCover; 
         #endregion
 
-        public TitleViewModel(IContentChapterParser ContentParser, IUserDialog UserDialog) 
+        public TitleViewModel(ITitleParser ContentParser, IUserDialog UserDialog) 
         {
             _contentParser = ContentParser;
             _userDialog = UserDialog;
