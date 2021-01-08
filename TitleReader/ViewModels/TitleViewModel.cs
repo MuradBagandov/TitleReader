@@ -90,7 +90,14 @@ namespace TitleReader.ViewModels
 
         private async void OnReadSelectChapterCommandExecute(object p)
         {
-            await ShowSelectChapter();
+            try
+            {
+                await ShowSelectChapter();
+            }
+            catch (Exception e)
+            {
+                _userDialog.ShowMessage(e.Message, Services.Enums.ShowMessageIcon.Error);
+            }
         }
         #endregion
 
@@ -102,7 +109,14 @@ namespace TitleReader.ViewModels
         private async void OnBeginToReadCommandExecute(object p)
         {
             SelectChapter = Title.Chapters.Last.Value;
-            await ShowSelectChapter();
+            try
+            {
+                await ShowSelectChapter();
+            }
+            catch (Exception e)
+            {
+                _userDialog.ShowMessage(e.Message, Services.Enums.ShowMessageIcon.Error);
+            }
         }
         #endregion
 
@@ -114,7 +128,15 @@ namespace TitleReader.ViewModels
         private async void OnReadNextChapterCommandExecute(object p)
         {
             SelectChapter = _selectLinkedChapter.Previous.Value;
-            await ShowSelectChapter();
+            try
+            {
+                await ShowSelectChapter();
+            }
+            catch (Exception e)
+            {
+                SelectChapter = _selectLinkedChapter.Next.Value;
+                _userDialog.ShowMessage(e.Message, Services.Enums.ShowMessageIcon.Error);
+            }
         }
         #endregion
 
@@ -127,8 +149,15 @@ namespace TitleReader.ViewModels
         {
 
             SelectChapter = _selectLinkedChapter.Next.Value;
-            await ShowSelectChapter();
-
+            try
+            {
+                await ShowSelectChapter();
+            }
+            catch (Exception e)
+            {
+                SelectChapter = _selectLinkedChapter.Previous.Value;
+                _userDialog.ShowMessage(e.Message, Services.Enums.ShowMessageIcon.Error);  
+            }
         }
 
        
@@ -139,13 +168,15 @@ namespace TitleReader.ViewModels
 
         #region Fields
         private IContentChapterParser _contentParser;
+        private IUserDialog _userDialog;
         private LinkedListNode<Chapter> _selectLinkedChapter;
         private BitmapSource _defaultCover; 
         #endregion
 
-        public TitleViewModel(IContentChapterParser ContentParser) 
+        public TitleViewModel(IContentChapterParser ContentParser, IUserDialog UserDialog) 
         {
             _contentParser = ContentParser;
+            _userDialog = UserDialog;
 
             ReadSelectChapterCommand = new LambdaCommand(OnReadSelectChapterCommandExecute, CanReadSelectChapterCommandExecuted);
             ReadPrevoiusChapterCommand = new LambdaCommand(OnReadPrevoiusChapterCommandExecute, CanReadPrevoiusChapterCommandExecuted);
@@ -177,30 +208,24 @@ namespace TitleReader.ViewModels
         {
             try
             {
-                MainWindowViewModel.CurrentPage = ApplicationPages.LoadingPage;
-                await LoadSelectChapterContent();
+                await LoadSelectChapterContent().ConfigureAwait(false);
                 MainWindowViewModel.CurrentPage = ApplicationPages.ChapterNovell;
-            }
-            catch
-            {
 
             }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+ 
         }
 
         private async Task LoadSelectChapterContent()
         {
             if (SelectChapter != null)
             {
-                try
-                {
-                    string result = (string) await _contentParser.GetContentAsync(SelectChapter.Uri);
+                string result = (string) await _contentParser.GetContentAsync(SelectChapter.Uri).ConfigureAwait(false);
 
-                    SelectChapterContent = String.IsNullOrWhiteSpace(result) == true ? String.Empty : result;
-                }
-                catch
-                {
-
-                }
+                SelectChapterContent = String.IsNullOrWhiteSpace(result) == true ? String.Empty : result;
             }
         }
     }

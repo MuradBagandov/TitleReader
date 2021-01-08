@@ -8,7 +8,7 @@ using System.Net;
 
 namespace TitleReader.Services
 {
-    class RanobelibContentParser : Interfaces.IContentChapterParser
+    class RanobelibContentParser : Interfaces.IContentChapterParser, IDisposable
     { 
         private WebClient _client = new WebClient() { Encoding = Encoding.UTF8 };
 
@@ -24,7 +24,7 @@ namespace TitleReader.Services
             }
             catch
             {
-                throw new Exception("Ошибка подключения");
+                throw new Exception("Произошла ошибка при загрузке ресурса");
             }
 
             var content_matches = Regex.Matches(_web_string, @"((?<=<p>)[^<]+(?=<\/p>))|((?<=>)[^<]+(?=<br>))|((?<=<p><[^<>]+>)[^<>]+(?=<[^<>]+><\/p>))");
@@ -42,7 +42,39 @@ namespace TitleReader.Services
 
         public async Task<object> GetContentAsync(object p)
         {
-            return await Task.Run(() => GetContent(p));
+            try
+            {
+                return await Task.Run(() => GetContent(p));
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        private bool disposed = false;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+
+                }
+                _client.Dispose();
+                disposed = true;
+            }
+        }
+        ~RanobelibContentParser()
+        {
+            Dispose(false);
         }
     }
 }

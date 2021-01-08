@@ -2,16 +2,40 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Threading;
 using TitleReader.Models;
 
 namespace TitleReader.Services
 {
-    class RanobelibTitleParser : Interfaces.ITitleParser
+    class RanobelibTitleParser : Interfaces.ITitleParser, IDisposable
     {
         private WebClient _client = new WebClient() { Encoding = Encoding.UTF8 };
+
+
+        public CancellationToken Cancellation { get; set; }
+
+        public IProgress<double> Progress { get; set; }
+
+        public RanobelibTitleParser()
+        {
+
+            _client.DownloadProgressChanged += (s, e) =>
+            {
+                if (Cancellation != null)
+                    if (Cancellation.IsCancellationRequested)
+                    {
+                        _client.CancelAsync();
+                    }
+                       
+                if (e.ProgressPercentage == 1)
+                    Progress?.Report(e.ProgressPercentage);
+            };
+        }
+
 
         public Title GetTitle(object p)
         {
@@ -22,17 +46,45 @@ namespace TitleReader.Services
             try
             {
                 _web_string = _client.DownloadString(uri);
+
             }
-            catch
+            catch (Exception e)
             {
-                throw new Exception("Ошибка подключения");
+                throw new Exception("Произошла ошибка при загрузке ресурса");
             }
 
+            return GetTitle(_web_string, uri);
+        }
+
+        public async Task<Title> GetTitleAsync(object p)
+        {
+            if (!(p is Uri uri))
+                throw new ArgumentException("Неккорректный аргумент");
+
+            string _web_string = default;
+            try
+            {
+                _web_string = await _client.DownloadStringTaskAsync(uri);
+            }
+            catch (Exception e)
+            {
+                if (e.Message == "Запрос был прерван: Запрос отменен.")
+                    throw new OperationCanceledException(e.Message);
+                else
+                    throw new Exception("Произошла ошибка при загрузке ресурса");
+            }
+           
+
+            return GetTitle(_web_string, uri);
+        }
+
+        private Title GetTitle(string page, Uri uri)
+        {
             string name, alterName, description, dateOfRelease, statusTranslate, status;
             List<string> authors = new List<string>();
             List<string> genres = new List<string>();
 
-            string info_section = Regex.Match(_web_string, @"<section([\s\S]+)<\/section>").Value;
+            string info_section = Regex.Match(page, @"<section([\s\S]+)<\/section>").Value;
 
             name = Regex.Match(info_section,
                 @"<meta itemprop=.name. content=.([^<>]+).\s+\/>").Groups[1].Value;
@@ -93,18 +145,13 @@ namespace TitleReader.Services
                 Description = description,
                 DateOfRelease = dateOfRelease,
                 Cover = cover,
-                Chapters = GetChapters(_web_string)
+                Chapters = GetChapters(page)
             };
 
             return title;
         }
 
-        public async Task<Title> GetTitleAsync(object p)
-        {
-            return await Task.Run(()=>GetTitle(p));
-        }
-
-        private LinkedList<Chapter> GetChapters(string web_string)
+        private LinkedList<Chapter> GetChapters(string page)
         {
             LinkedList<Chapter> result;
             string name;
@@ -112,10 +159,10 @@ namespace TitleReader.Services
             Uri uri;
             
 
-            var chapter_matches = Regex.Matches(web_string, 
+            var chapter_matches = Regex.Matches(page, 
                 @"<a\s*class=.link-default.\s*title=([^<>]*)href=.(.*).>([^<]*)(?=<)");
 
-            var chapter_dates_matches = Regex.Matches(web_string, 
+            var chapter_dates_matches = Regex.Matches(page, 
                 @"class=.chapter-item__date.>\s*([^<>\n]*)");
 
             if (chapter_matches.Count == 0)
@@ -144,5 +191,39 @@ namespace TitleReader.Services
 
             return result;
         }
+
+
+
+        
+
+       
+
+
+        #region Dispose
+        private bool disposed = false;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+
+                }
+                _client.Dispose();
+                disposed = true;
+            }
+        }
+        ~RanobelibTitleParser()
+        {
+            Dispose(false);
+        } 
+        #endregion
     }
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -19,6 +20,7 @@ namespace TitleReader.ViewModels
     internal class MainWindowViewModel : Base.ViewModel
     {
         private ITitleParser _parser;
+        private IUserDialog _userDialog;
 
         #region Properties
 
@@ -31,16 +33,6 @@ namespace TitleReader.ViewModels
         {
             get => _currentPage;
             set => Set(ref _currentPage, value);
-        }
-        #endregion
-
-        #region ApplicationPages : LoadingPage
-        private ApplicationPages _loadingPage = ApplicationPages.None;
-
-        public ApplicationPages LoadingPage
-        {
-            get => _loadingPage;
-            set => Set(ref _loadingPage, value);
         }
         #endregion
 
@@ -67,18 +59,30 @@ namespace TitleReader.ViewModels
 
         private async void OnLoadTitleCommandExecute(object p)
         {
-            MainTitleViewModel.Title = null;
+            
+            var (cancellation, close) = _userDialog.ShowLoading();
+            _parser.Cancellation = cancellation;
+
             try
             {
-                CurrentPage = ApplicationPages.LoadingPage;
-                var title  = await _parser.GetTitleAsync(new Uri(Adrress));
+                Title title = await _parser.GetTitleAsync(new Uri(Adrress));
                 MainTitleViewModel.Title = title;
                 CurrentPage = ApplicationPages.Title;
             }
-            catch 
-            { 
-                CurrentPage = ApplicationPages.Main; 
+            catch (OperationCanceledException)
+            {
+
             }
+            catch (Exception e)
+            {
+                close();
+                _userDialog.ShowMessage(e.Message, Services.Enums.ShowMessageIcon.Warning);
+            }
+            finally
+            {
+                close();
+            }
+            
         }
         #endregion
 
@@ -122,24 +126,12 @@ namespace TitleReader.ViewModels
 
         #endregion
 
-        #region ShowLoadingCommand
-        public ICommand ShowLoadingCommand { get; }
-
-        private void OnShowLoadingCommandExecute(object p) => LoadingPage = ApplicationPages.LoadingPage;
 
         #endregion
 
-        #region ShowLoadingCommand
-        public ICommand CloseLoadingCommand { get; }
-
-        private void OnCloseLoadingCommandExecute(object p) => LoadingPage = ApplicationPages.None;
-
-        #endregion
-
-        #endregion
-
-        public MainWindowViewModel(ITitleParser parser, TitleViewModel TitleWindow )
+        public MainWindowViewModel(ITitleParser parser, TitleViewModel TitleWindow, IUserDialog dialog )
         {
+            _userDialog = dialog;
             _parser = parser;
             MainTitleViewModel = TitleWindow;
             MainTitleViewModel.MainWindowViewModel = this;
@@ -149,8 +141,6 @@ namespace TitleReader.ViewModels
             ShowMainCommand = new LambdaCommand(OnShowMainCommandExecute);
             ShowTitleCommand = new LambdaCommand(OnShowTitleCommandExecute);
             ShowChapterCommand = new LambdaCommand(OnShowChapterCommandExecute);
-            ShowLoadingCommand = new LambdaCommand(OnShowLoadingCommandExecute);
-            CloseLoadingCommand = new LambdaCommand(OnCloseLoadingCommandExecute);
         }
     }
 }

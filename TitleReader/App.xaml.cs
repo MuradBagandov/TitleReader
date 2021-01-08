@@ -21,7 +21,8 @@ namespace TitleReader
     /// </summary>
     public partial class App : Application
     {
-
+        public static Window FocusedWindow => Current.Windows.Cast<Window>().Where(i => i.IsFocused).FirstOrDefault();
+        public static Window ActiveWindow => Current.Windows.Cast<Window>().Where(i => i.IsActive).FirstOrDefault();
         public static IHost Host => _host ??= Program.CreateHostBuilder(Environment.GetCommandLineArgs()).Build();
         public static bool IsDesignMode { get; set; } = true;
         public static string CurrentDirectory => IsDesignMode == true ?
@@ -52,6 +53,7 @@ namespace TitleReader
         internal static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
             services.AddSingleton<ITitleParser, RanobelibTitleParser>();
+            services.AddSingleton<IUserDialog, UserDialog>();
             services.AddSingleton<IContentChapterParser, RanobelibContentParser>();
             services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<TitleViewModel>();

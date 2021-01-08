@@ -1,0 +1,40 @@
+﻿<Window x:Class="TitleReader.Views.Windows.ShowMessageWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:local="clr-namespace:TitleReader.Views.Windows"
+        mc:Ignorable="d"
+        Title="ShowMessageWindow" MaxWidth="400" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStyle="None" AllowsTransparency="True" Background="Transparent">
+
+    <Border CornerRadius="5" Background="White">
+        <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:ShowMessageWindow}}" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <UniformGrid Grid.Row="1" Margin="0" Columns="1" Visibility="Visible">
+                <Button Content="Ок" Margin="3" MaxWidth="100" Click="Button_Click" FontSize="14" Padding="5,3"/>
+            </UniformGrid>
+
+            <Grid Grid.Row="0" Margin="5,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <fa:ImageAwesome x:Name="IconMessage" Grid.Column="0" Icon="Warning" Height="25" DockPanel.Dock="Left" Margin="10,10" />
+
+                <TextBlock Grid.Column="1" Text="{Binding ShowMessageText}"
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Center" 
+                       TextWrapping="Wrap" FontSize="16" Margin="0,10"/>
+            </Grid>
+
+
+        </Grid>
+    </Border>
+</Window>

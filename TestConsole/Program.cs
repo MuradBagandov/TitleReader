@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using System.Windows;
 
 namespace TestConsole
 {
@@ -11,24 +12,11 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
-            LinkedList<person> persons = new LinkedList<person>();
-            persons.AddLast(new person("tom"));
 
-            persons.AddLast(new person("toni"));
-
-            persons.AddFirst(new person("Jojo"));
-            
-            LinkedListNode <person> ps = persons.First;
-
-            while (ps != null)
-            {
-                Console.WriteLine(ps.Value.name);
-                ps = ps.Next;
-            }
-
+            MessageBox.Show("Ошибка", "Ошибка чтения данных", MessageBoxButton.OK, MessageBoxImage.Error);
             Console.Read();
         }
-
+        
     }
 
     public class person

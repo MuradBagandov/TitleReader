@@ -1,0 +1,21 @@
+﻿<Window x:Class="TitleReader.Views.Windows.LoadingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:local="clr-namespace:TitleReader.Views.Windows"
+        mc:Ignorable="d"
+        Title="LoadingWindow" Height="200" Width="150" 
+        AllowsTransparency="True" Background="Transparent" WindowStyle="None" ShowInTaskbar="False" WindowStartupLocation="CenterOwner">
+    <Border CornerRadius="5" Background="White">
+        <DockPanel Margin="5,10">
+            
+            <Button x:Name="Button_Close" DockPanel.Dock="Bottom" Padding="5" Click="Button_Click">Отмена</Button>
+            <Grid>
+                <fa:ImageAwesome Icon="Spinner" Spin="True" SpinDuration="3" Height="50"/>
+            </Grid>
+        </DockPanel>
+    </Border>
+</Window>

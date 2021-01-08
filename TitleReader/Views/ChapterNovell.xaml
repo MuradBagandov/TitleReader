@@ -51,7 +51,7 @@
                            Foreground="White" FontSize="16" Margin="5,0"/>
 
                 </StackPanel>
-                <Border DockPanel.Dock="Left" Width="200" Margin="10,5"  HorizontalAlignment="Left"
+                <!--<Border DockPanel.Dock="Left" Width="200" Margin="10,5"  HorizontalAlignment="Left"
                         CornerRadius="3" Background="#404040">
                     <ComboBox ItemsSource="{Binding Title.Chapters}"
                               Margin="10" BorderThickness="0" VerticalContentAlignment="Center"
@@ -71,7 +71,7 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </ComboBox>
-                </Border>
+                </Border>-->
                 
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="0,0,10,0">
                     <Button>
