@@ -24,27 +24,34 @@
                 <Setter Property="Background" Value="#eeeeee"/>
             </Style>
 
-            <Style x:Key="TextBlockPropertyName" TargetType="TextBlock">
+            <Style x:Key="ContentPropertyItem" TargetType="Border">
+                <Setter Property="Margin" Value="0,0,0,5"/>
+            </Style>
 
+            <Style x:Key="TextBlockPropertyName" TargetType="TextBlock">
                 <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="FontSize" Value="14"/>
                 <Setter Property="Margin" Value="0,0,5,0"/>
             </Style>
 
-            <Style x:Key="TextBlockPropertyValue" TargetType="TextBlock"
-                  >
+            <Style x:Key="TextBlockPropertyValue" TargetType="TextBlock">
                 <Setter Property="FontSize" Value="14"/>
                 <Setter Property="TextWrapping" Value="Wrap"/>
             </Style>
 
+            <Style x:Key="RunPropertyName" TargetType="Run">
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+
+            <Style x:Key="RunPropertyValue" TargetType="Run">
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+
+
             <Style x:Key="TextBlockTitleName" TargetType="TextBlock" BasedOn="{StaticResource TextBlockPropertyName}">
                 <Setter Property="FontSize" Value="18"/>
                 <Setter Property="TextWrapping" Value="Wrap"/>
-            </Style>
-
-            <Style TargetType="WrapPanel" x:Key="WrapPanelRowTitleProperties">
-                <Setter Property="Orientation" Value="Horizontal"/>
-                <Setter Property="Margin" Value="0,0,0,5"/>
             </Style>
 
             <Style TargetType="Expander" BasedOn="{StaticResource ExpanderRight}">
@@ -97,97 +104,117 @@
                                 <TextBlock Text="{Binding AlterName}" Style="{StaticResource TextBlockPropertyValue}"/>
                             </StackPanel>
 
-                            <WrapPanel>
-                                <WrapPanel.Style>
-                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
+                            <Border>
+                                <Border.Style>
+                                    <Style TargetType="Border" BasedOn="{StaticResource ContentPropertyItem}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Names}" Value="{x:Null}">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </WrapPanel.Style>
-                                <TextBlock Text="Тип" Style="{StaticResource TextBlockPropertyName}"/>
-                                <TextBlock Text="{Binding Names}" Style="{StaticResource TextBlockPropertyValue}"/>
-                            </WrapPanel>
+                                    
+                                </Border.Style>
 
-                            <WrapPanel>
-                                <WrapPanel.Style>
-                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
+                                <TextBlock TextWrapping="Wrap">
+                                    <Run Text="Тип" Style="{StaticResource RunPropertyName}"/>
+                                    <Run Text="{Binding Names}" Style="{StaticResource RunPropertyValue}"/>
+                                </TextBlock>
+                            </Border>
+
+
+                            <Border>
+                                <Border.Style>
+                                    <Style TargetType="Border" BasedOn="{StaticResource ContentPropertyItem}">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Authors.Count}" Value="0">
+                                            <DataTrigger Binding="{Binding Authors}" Value="{x:Null}">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Authors}" Value="{x:Null}">
+                                            <DataTrigger Binding="{Binding Authors.Count}" Value="0">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </WrapPanel.Style>
-                                <TextBlock Text="Автор" Style="{StaticResource TextBlockPropertyName}"/>
-                                <TextBlock Text="{Binding Authors, Converter={StaticResource ListToString}}" Style="{StaticResource TextBlockPropertyValue}"/>
-                            </WrapPanel>
+                                </Border.Style>
 
-                            <WrapPanel>
-                                <WrapPanel.Style>
-                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
+                                <TextBlock TextWrapping="Wrap">
+                                    <Run Text="Авторы" Style="{StaticResource RunPropertyName}"/>
+                                    <Run Text="{Binding Authors, Converter={StaticResource ListToString}}" Style="{StaticResource RunPropertyValue}"/>
+                                </TextBlock>
+                            </Border>
+
+                            <Border>
+                                <Border.Style>
+                                    <Style TargetType="Border" BasedOn="{StaticResource ContentPropertyItem}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Status}" Value="{x:Null}">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </WrapPanel.Style>
-                                <TextBlock Text="Статус тайтла" Style="{StaticResource TextBlockPropertyName}"/>
-                                <TextBlock Text="{Binding Status}" Style="{StaticResource TextBlockPropertyValue}"/>
-                            </WrapPanel>
+                                </Border.Style>
 
-                            <WrapPanel>
-                                <WrapPanel.Style>
-                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
+                                <TextBlock TextWrapping="Wrap">
+                                    <Run Text="Статус тайтла" Style="{StaticResource RunPropertyName}"/>
+                                    <Run Text="{Binding Status}" Style="{StaticResource RunPropertyValue}"/>
+                                </TextBlock>
+                            </Border>
+
+                            <Border>
+                                <Border.Style>
+                                    <Style TargetType="Border" BasedOn="{StaticResource ContentPropertyItem}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding StatusTranslate}" Value="{x:Null}">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </WrapPanel.Style>
-                                <TextBlock Text="Статус перевода" Style="{StaticResource TextBlockPropertyName}"/>
-                                <TextBlock Text="{Binding StatusTranslate}" Style="{StaticResource TextBlockPropertyValue}"/>
-                            </WrapPanel>
+                                </Border.Style>
 
-                            <WrapPanel>
-                                <WrapPanel.Style>
-                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
+                                <TextBlock TextWrapping="Wrap">
+                                    <Run Text="Статус перевода" Style="{StaticResource RunPropertyName}"/>
+                                    <Run Text="{Binding StatusTranslate}" Style="{StaticResource RunPropertyValue}"/>
+                                </TextBlock>
+                            </Border>
+
+                            <Border>
+                                <Border.Style>
+                                    <Style TargetType="Border" BasedOn="{StaticResource ContentPropertyItem}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding DateOfRelease}" Value="{x:Null}">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </WrapPanel.Style>
-                                <TextBlock Text="Дата релиза" Style="{StaticResource TextBlockPropertyName}"/>
-                                <TextBlock Text="{Binding DateOfRelease}" Style="{StaticResource TextBlockPropertyValue}"/>
-                            </WrapPanel>
+                                </Border.Style>
 
-                            <WrapPanel>
-                                <WrapPanel.Style>
-                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
+                                <TextBlock TextWrapping="Wrap">
+                                    <Run Text="Дата релиза" Style="{StaticResource RunPropertyName}"/>
+                                    <Run Text="{Binding DateOfRelease}" Style="{StaticResource RunPropertyValue}"/>
+                                </TextBlock>
+                            </Border>
+
+                            <Border>
+                                <Border.Style>
+                                    <Style TargetType="Border" BasedOn="{StaticResource ContentPropertyItem}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Chapters}" Value="{x:Null}">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </WrapPanel.Style>
-                                <TextBlock Text="Загружено глав" Style="{StaticResource TextBlockPropertyName}" 
-                                           ToolTip="Учитываются экстра главы и пролог"/>
-                                <TextBlock Text="{Binding Chapters.Count}" Style="{StaticResource TextBlockPropertyValue}"/>
-                            </WrapPanel>
+                                </Border.Style>
 
-                            <WrapPanel>
-                                <WrapPanel.Style>
-                                    <Style TargetType="WrapPanel" BasedOn="{StaticResource WrapPanelRowTitleProperties}">
+                                <TextBlock TextWrapping="Wrap">
+                                    <Run Text="Количество глав" Style="{StaticResource RunPropertyName}"/>
+                                    <Run Text="{Binding Chapters.Count, Mode=OneWay}" Style="{StaticResource RunPropertyValue}"/>
+                                </TextBlock>
+                            </Border>
+
+
+                            <Border>
+                                <Border.Style>
+                                    <Style TargetType="Border" BasedOn="{StaticResource ContentPropertyItem}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Genres}" Value="{x:Null}">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -197,10 +224,13 @@
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </WrapPanel.Style>
-                                <TextBlock Text="Жанры" Style="{StaticResource TextBlockPropertyName}"/>
-                                <TextBlock Text="{Binding Genres, Converter={StaticResource ListToString}}" Style="{StaticResource TextBlockPropertyValue}"/>
-                            </WrapPanel>
+                                </Border.Style>
+
+                                <TextBlock TextWrapping="Wrap">
+                                    <Run Text="Жанры" Style="{StaticResource RunPropertyName}"/>
+                                    <Run Text="{Binding Genres, Converter={StaticResource ListToString}}" Style="{StaticResource RunPropertyValue}"/>
+                                </TextBlock>
+                            </Border>
 
                             <Expander Margin="0 0,0,5">
                                 <Expander.Header>
