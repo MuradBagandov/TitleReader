@@ -72,8 +72,6 @@ namespace TitleReader.Services
             return GetTitle(_web_string, uri);
         }
 
-        
-
 
         public object GetContent(object p)
         {
@@ -94,7 +92,6 @@ namespace TitleReader.Services
 
         }
 
-       
 
         public async Task<object> GetContentAsync(object p)
         {

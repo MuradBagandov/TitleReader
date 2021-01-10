@@ -3,14 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:TitleReader"
              xmlns:vm="clr-namespace:TitleReader.ViewModels"
+             xmlns:conv="clr-namespace:TitleReader.Infrastuctures.Convertors"
              StartupUri="Views/Windows/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Basic.xaml"/>
-                <!--<ResourceDictionary Source="Resources/Styles/ColourfulDarkTheme.xaml"/>-->
+                <ResourceDictionary Source="Resources/Styles/ColourfulDarkTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <vm:ViewModelLocator x:Key="Locator"/>
+
+            <conv:ChapterNameFormatToListBox x:Key="ChaptersFormatConv"/>
+            <conv:ListToString x:Key="ListToString"/>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

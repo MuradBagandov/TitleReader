@@ -18,26 +18,21 @@
     
     <Grid>
         <Grid.Resources>
-            <Style x:Key="ContentPanel" TargetType="Border">
+            <Style x:Key="ContentPanel" TargetType="Border" BasedOn="{StaticResource Border}">
                 <Setter Property="Margin" Value="0,0,0,8"/>
                 <Setter Property="CornerRadius" Value="2"/>
-                <Setter Property="Background" Value="#eeeeee"/>
             </Style>
 
             <Style x:Key="ContentPropertyItem" TargetType="Border">
-                <Setter Property="Margin" Value="0,0,0,5"/>
+                <Setter Property="Margin" Value="0,0"/>
+                <Setter Property="BorderBrush" Value="#404040"/>
+                <Setter Property="BorderThickness" Value="0,0,0,0.5"/>
             </Style>
 
-            <Style x:Key="TextBlockPropertyName" TargetType="TextBlock">
-                <Setter Property="FontWeight" Value="Bold"/>
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="Margin" Value="0,0,5,0"/>
+            <Style x:Key="TextBlockPropertyItem" TargetType="TextBlock" BasedOn="{StaticResource TextBlock}">
+                <Setter Property="Margin" Value="0,10"/>
             </Style>
-
-            <Style x:Key="TextBlockPropertyValue" TargetType="TextBlock">
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="TextWrapping" Value="Wrap"/>
-            </Style>
+            
 
             <Style x:Key="RunPropertyName" TargetType="Run">
                 <Setter Property="FontWeight" Value="Bold"/>
@@ -48,12 +43,6 @@
                 <Setter Property="FontSize" Value="14"/>
             </Style>
 
-
-            <Style x:Key="TextBlockTitleName" TargetType="TextBlock" BasedOn="{StaticResource TextBlockPropertyName}">
-                <Setter Property="FontSize" Value="18"/>
-                <Setter Property="TextWrapping" Value="Wrap"/>
-            </Style>
-
             <Style TargetType="Expander" BasedOn="{StaticResource ExpanderRight}">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Description}" Value="{x:Null}">
@@ -62,46 +51,68 @@
                 </Style.Triggers>
             </Style>
 
-            <conv:ChapterNameFormatToListBox x:Key="ChaptersFormatConv"/>
-            <conv:ListToString x:Key="ListToString"/>
+           
         </Grid.Resources>
 
-        <ScrollViewer Visibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Hidden">
-            <StackPanel Margin="10" MaxWidth="1000">
-                <Border Style="{StaticResource ContentPanel}" >
 
-                    <DockPanel Margin="5,2">
-                        <Image DockPanel.Dock="Left" Source="/Resources/Images/icon.png" Height="50" Cursor="Hand">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseDown">
-                                    <i:InvokeCommandAction Command="{Binding MainWindowViewModel.ShowMainCommand}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Image>
-                               
-                        <Grid></Grid>
-                    </DockPanel>
-                </Border>
+        <Border x:Name="HeaderPanel"
+                Panel.ZIndex="1"
+                Background="{StaticResource LightContainerBackground}"
+                Height="60" VerticalAlignment="Top" Margin="0,0"
+                >
+
+            <DockPanel Margin="5,2">
+                <Button DockPanel.Dock="Left" Padding="0"
+                                Style="{StaticResource ButtonImageTransparent}" 
+                                Command="{Binding MainWindowViewModel.ShowMainCommand}">
+                    <Image  Source="/Resources/Images/iconWhite.png" Height="50"/>
+                </Button>
+
+                <Button DockPanel.Dock="Right" Margin="0,0,6,0" Style="{StaticResource ButtonImageTransparentRoundedCorners}">
+                    <fa:ImageAwesome Icon="Cog" Height="12" Style="{DynamicResource ImageAwesomeButtonContent}"/>
+                </Button>
+
+                <Grid></Grid>
+            </DockPanel>
+        </Border>
+
+        <ScrollViewer x:Name="ScrollContent" Visibility="Visible"
+                      ScrollViewer.VerticalScrollBarVisibility="Hidden" 
+                      ScrollChanged="ScrollContent_ScrollChanged">
+            <StackPanel Margin="10" MaxWidth="1000">
                 
-                <Border Style="{StaticResource ContentPanel}">
+                
+                <Border Style="{StaticResource ContentPanel}" Margin="0,80,0,10">
                     <Grid Margin="10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <StackPanel VerticalAlignment="Top" Width="200" Margin="0,0,10,0">
+                        <StackPanel VerticalAlignment="Top" Width="250" Margin="0,3,15,0">
                             <Border BorderBrush="#505050" BorderThickness="0.3"
                                 Margin="0,0,0,0">
                                 <Image Source="{Binding Cover}"  VerticalAlignment="Top"
                                Margin="1"/>
                             </Border>
                             <Button Content="Начать читать" Padding="10,5" Margin="0,5"
-                                    Command="{Binding BeginToReadCommand}"/>
+                                    Command="{Binding BeginToReadCommand}"
+                                    FontWeight="Bold"
+                                    Style="{StaticResource RoundedCornersColourful}"/>
                         </StackPanel>
-                        <StackPanel  Orientation="Vertical" Grid.Column="1"  DataContext="{Binding Title}">
+                        <Rectangle VerticalAlignment="Stretch" 
+                                   HorizontalAlignment="Right" 
+                                   
+                                   Width="0.5" 
+                                   Fill="#505050" StrokeThickness="0"/>
+                        <StackPanel Orientation="Vertical" Grid.Column="1" Margin="15,0,0,0"
+                                    DataContext="{Binding Title}">
+                            <StackPanel.Resources>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockPropertyItem}"/>
+                            </StackPanel.Resources>
+                            
                             <StackPanel Orientation="Vertical" Margin="0,0 0 5">
-                                <TextBlock Text="{Binding Name}" Style="{StaticResource TextBlockTitleName}"/>
-                                <TextBlock Text="{Binding AlterName}" Style="{StaticResource TextBlockPropertyValue}"/>
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="24" Margin="0,0,0,10"/>
+                                <TextBlock Text="{Binding AlterName}" FontWeight="Bold" FontSize="20" Margin="0,0,0,10"/>
                             </StackPanel>
 
                             <Border>
@@ -232,16 +243,23 @@
                                 </TextBlock>
                             </Border>
 
-                            <Expander Margin="0 0,0,5">
-                                <Expander.Header>
-                                    <TextBlock Text="Описание" Style="{StaticResource TextBlockPropertyName}" Margin="0" />
-                                </Expander.Header>
+                            <Border BorderThickness="0">
+                                <Border.Style>
+                                    <Style TargetType="Border" BasedOn="{StaticResource ContentPropertyItem}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Description}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
 
-                                <WrapPanel Orientation="Vertical">
-                                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap"
-                                Style="{StaticResource TextBlockPropertyValue}"/>
-                                </WrapPanel>
-                            </Expander>
+                                <TextBlock TextWrapping="Wrap">
+                                    <Run Text="{Binding Description}" Style="{StaticResource RunPropertyValue}"/>
+                                </TextBlock>
+                            </Border>
+
+                            
 
                         </StackPanel>
                     </Grid>
@@ -265,19 +283,18 @@
                         </Grid.RowDefinitions>
                         <DockPanel>
                             <Button DockPanel.Dock="Right" 
-                                    Padding="20,0" Margin="8"
+                                    Padding="30,5" Margin="8" VerticalAlignment="Center"
                                     Content="Открыть"
                                     Command="{Binding ReadSelectChapterCommand}"/>
                             
                             <TextBlock Grid.Row="0" Text="Список глав" Margin="10"
-                                   Style="{StaticResource TextBlockPropertyName}"/>
+                                   FontWeight="SemiBold"/>
                            
                         </DockPanel>
                         <Border Grid.Row="1" BorderThickness="0, 0.3" BorderBrush="#606060">
 
                             <Grid>
                                 <TextBlock Text="Нет глав!" TextAlignment="Center"
-                                       Style="{StaticResource TextBlockPropertyValue}"
                                        Margin="0,20" FontSize="16"
                                        Visibility="{Binding Visibility,ElementName=ListChapters, Converter={conv:ConvertPropertyVisibility Base=Collapsed}}"/>
 
@@ -288,10 +305,9 @@
                                          SelectedItem="{Binding SelectChapter}"
                                          VirtualizingPanel.IsVirtualizing="True"
                                          VirtualizingPanel.VirtualizationMode="Recycling"
-                                         VirtualizingPanel.IsContainerVirtualizable="True"
-                                         >
-                                    <ListBox.Style >
-                                        <Style TargetType="ListBox">
+                                         VirtualizingPanel.IsContainerVirtualizable="True">
+                                    <ListBox.Style>
+                                        <Style TargetType="ListBox" BasedOn="{StaticResource ListBox}">
                                             <Style.Triggers>
                                                 <Trigger Property="ItemsSource" Value="{x:Null}">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -314,27 +330,23 @@
                                                             <i:InvokeCommandAction Command="{Binding ReadSelectChapterCommand}"/>
                                                         </i:EventTrigger>
                                                     </i:Interaction.Triggers>
-                                                    <Border Opacity="0.1" Background="White"/>
+                                                    <Border Opacity="0.01"/>
                                                 </ContentControl>
 
-                                                <Border>
+                                                <ContentControl >
                                                     <Grid Margin="5">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition/>
                                                             <ColumnDefinition Width="auto"/>
                                                         </Grid.ColumnDefinitions>
 
-                                                        <StackPanel Grid.Column="0" Orientation="Horizontal">
-
-                                                            <TextBlock Text="{Binding Number}" FontWeight="Bold"/>
-                                                            <TextBlock Text="{Binding Name, Converter={StaticResource ChaptersFormatConv}}"/>
-
-                                                        </StackPanel>
-
+                                                        <TextBlock>
+                                                            <Run Text="{Binding Number}" FontWeight="Bold"/><Run Text="{Binding Name, Converter={StaticResource ChaptersFormatConv}}"/>
+                                                        </TextBlock>
 
                                                         <TextBlock Grid.Column="1" Text="{Binding Date}" Margin="0,0,10,0"/>
                                                     </Grid>
-                                                </Border>
+                                                </ContentControl>
                                             </Grid>
                                             
                                         </DataTemplate>

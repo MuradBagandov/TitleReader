@@ -16,30 +16,25 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Background="DeepSkyBlue">
+        <Grid Grid.Row="0" Background="{StaticResource LightContainerBackground}">
             <Grid MaxWidth="1060">
-                <Border CornerRadius="15" Background="White"
-                         BorderThickness="2"
+                <Border CornerRadius="15" Margin="15,8"
+                        BorderThickness="2"
                         Width="500"
-                    HorizontalAlignment="Right" Margin="15,8">
+                        HorizontalAlignment="Right">
 
                     <DockPanel  Margin="10,5">
-                        <Button DockPanel.Dock="Right"
+                        <Button DockPanel.Dock="Right" Style="{StaticResource ButtonTransparent}"
                                 Command="{Binding LoadTitleCommand}">
-                            <fa:ImageAwesome Icon="Search" Margin="2" Height="15"/>
+                            <fa:ImageAwesome Icon="Search" Margin="2" Height="15" Style="{StaticResource ImageAwesomeButtonContent}"/>
                         </Button>
                         <TextBox Margin="0,0,8,0" VerticalContentAlignment="Center"
                                  Background="Transparent"
                                  BorderThickness="0"
                                  VerticalAlignment="Center" 
-                                 FontSize="18">
-                            <TextBox.Text>
-                                <Binding Path="Adrress">
-                                    <Binding.ValidationRules>
-                                        <ExceptionValidationRule />
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </TextBox.Text>
+                                 FontSize="18"
+                                 Text="{Binding Adrress, UpdateSourceTrigger=PropertyChanged}">
+                            
                         </TextBox>
                         
                     </DockPanel>

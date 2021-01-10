@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="ShowMessageWindow" MaxWidth="400" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStyle="None" AllowsTransparency="True" Background="Transparent">
 
-    <Border CornerRadius="5" Background="White">
+    <Border CornerRadius="5">
         <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:ShowMessageWindow}}" Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>

@@ -313,10 +313,17 @@
     <Resource Include="Resources\Images\istockphoto-531267772-170667a.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\Icon1.png" />
+    <Resource Include="Resources\Images\Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\Icon.png" />
+    <Resource Include="Resources\Images\IconBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\IconBlue_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\IconBlack.png" />
+    <Resource Include="Resources\Images\IconWhite.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
